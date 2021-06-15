@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI_Publisher.Models;
+using StackExchange.Redis;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -56,6 +57,16 @@ namespace WebAPI_Publisher.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [HttpGet("/cache")]
+        public void GetCache()
+        {
+            ConnectionMultiplexer muxer = ConnectionMultiplexer.Connect("localhost:6379");
+            IDatabase conn = muxer.GetDatabase();
+            var value = conn.StringGet("test");
+            Console.WriteLine(value);
+            muxer.Close();
         }
     }
 }
