@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WebApiService } from '../../services/web-api.service';
 import { User } from '../../models/User';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-register-page',
   templateUrl: './register-page.component.html',
@@ -9,7 +9,7 @@ import { User } from '../../models/User';
 })
 export class RegisterPageComponent implements OnInit {
 
-  constructor(private webService: WebApiService) {}
+  constructor(private webService: WebApiService, private router: Router) {}
 
   UserOption: Number = 1;
   UserEmail: string = "";
@@ -41,7 +41,10 @@ export class RegisterPageComponent implements OnInit {
 
       this.webService.register(user).subscribe(
         (resp)=>{
-          console.log("response: " + resp)
+          console.log("response: " + resp);
+          console.log("sucessfull registered");
+          this.router.navigate(['login']);
+
         },
         (error)=>{
           console.log("error " + error.status)
@@ -51,6 +54,11 @@ export class RegisterPageComponent implements OnInit {
         }
       );
     }
+  }
+
+  // Go back to login page
+  back(event: any){
+    this.router.navigate(['']);
   }
 
 }

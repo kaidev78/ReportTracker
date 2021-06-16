@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import {Observable, of, throwError} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
-import { User } from '../models/User';
+import { User } from '../../models/User';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class WebApiService {
+export class AuthApiService {
 
-  private registerUrl = 'http://localhost:5000/user/register';
+  private authUrl = 'http://localhost:5000/user/authtest';
   constructor(private http:HttpClient) { }
 
   private handleError(error: HttpErrorResponse) {
@@ -30,10 +30,13 @@ export class WebApiService {
         status: error.status
       });
   }
-  register(user: User): Observable<any> {
-    console.log("register is called");
-    return this.http.post(this.registerUrl, user).pipe(
-      catchError(this.handleError)
-    );
+
+  authtest(userName: string, userPassword: string): Observable<any> {
+    console.log("authentication test");
+    return this.http.post(this.authUrl, {
+      "UserName": userName,
+      "UserPassword": userPassword
+    });
   }
+
 }
