@@ -1,0 +1,17 @@
+<body class="text-center">
+  <form class="form-signin">
+    <div class="alert alert-danger" role="alert" *ngIf="UserExist">This is a danger alert—check it out!</div>
+    <h1 class="h3 mb-3 font-weight-normal">Register Here!</h1>
+    <select class="form-select" id="singleSelect" [(ngModel)]="UserOption" name="UserOption">
+        <option value=1>Customer</option>
+        <option value=2>Developer</option>
+      </select>
+    <input type="email" id="inputEmail" class="form-control" placeholder="Email address"  [(ngModel)]="UserEmail" name="UserEmail" required autofocus>
+    <input type="username" id="inputUserName" class="form-control" placeholder="User Name"  [(ngModel)]="UserName" name="UserName" required>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password"  [(ngModel)]="UserPassword" name="UserPassword" required>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Confirm Password"  [(ngModel)]="UserConfirmPassword" name="UserConfirmPassword" required>
+    <div class="checkbox mb-3">
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="register($event)">Register</button>
+  </form>
+</body>

@@ -1,10 +1,11 @@
-/*Modules*/
+/* Modules */
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
-/*Components*/
+/* Components */
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
@@ -14,6 +15,7 @@ import { CustomerMainPageComponent } from './components/customer-main-page/custo
 import { CustomerNavbarComponent } from './components/customer-navbar/customer-navbar.component';
 import { SearchPageComponent } from './components/search-page/search-page.component';
 import { ProductIssuePageComponent } from './components/product-issue-page/product-issue-page.component';
+import { RegisterPageComponent } from './components/register-page/register-page.component';
 
 @NgModule({
   declarations: [
@@ -25,12 +27,14 @@ import { ProductIssuePageComponent } from './components/product-issue-page/produ
     CustomerMainPageComponent,
     CustomerNavbarComponent,
     SearchPageComponent,
-    ProductIssuePageComponent
+    ProductIssuePageComponent,
+    RegisterPageComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

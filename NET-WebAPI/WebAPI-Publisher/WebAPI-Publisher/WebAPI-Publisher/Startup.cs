@@ -26,7 +26,14 @@ namespace WebAPI_Publisher
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+           
+            //Cors
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin()
+                                                             .AllowAnyMethod()
+                                                             .AllowAnyHeader());
+            });
 
             // Register the Swagger services
             services.AddSwaggerDocument();
@@ -43,6 +50,7 @@ namespace WebAPI_Publisher
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             services.AddMassTransitHostedService();
 
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +60,9 @@ namespace WebAPI_Publisher
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //enable cors?
+            app.UseCors("AllowOrigin");
 
             app.UseRouting();
 

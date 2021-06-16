@@ -37,6 +37,13 @@ namespace WebAPI_Publisher.Controllers
             return "value";
         }
 
+        // GET : test
+        [HttpGet("/test")]
+        public void Test()
+        {
+           
+        }
+
         // POST api/values
         [HttpPost]
         public void Post([FromBody] string value)
@@ -56,8 +63,8 @@ namespace WebAPI_Publisher.Controllers
         }
 
 
-        // POST api/login
-        // login user
+        // POST: api/login
+        // login a user
         [HttpPost("/login")]
         public JsonResult Login([FromBody] UserLogin userLogin)
         {
@@ -86,5 +93,62 @@ namespace WebAPI_Publisher.Controllers
             return result;
         }
 
+        // POST: api/register
+        // register a user
+        [HttpPost("/register")]
+        public IActionResult Register([FromBody] User user)
+        {
+
+            string query = @"SELECT * FROM dbo.Users WHERE UserName = '" + user.UserName + "'";
+            DataTable dataTable = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ReportTrackerDBCon");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    dataTable.Load(myReader);
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            int found = dataTable.Rows.Count;
+            if (found > 0)
+            {
+                // There are user already existed
+                return StatusCode(400, "User is already existed");
+            }
+            else
+            {
+                query = @"INSERT into dbo.Users VALUES ('" +
+                user.UserName + @"', '" +
+                user.UserPassword + @"', '" +
+                DateTime.Now + @"', '" +
+                user.UserType + @"', '" +
+                user.UserEmail + @"')";
+                Console.WriteLine("query is " + query);
+                dataTable = new DataTable();
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+                {
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myReader = myCommand.ExecuteReader();
+                        //dataTable.Load(myReader);
+
+                        myReader.Close();
+                        myCon.Close();
+                    }
+                }
+
+                return new JsonResult("Updated Sucessfully");
+            }
+        }
+
+
     }
+
 }
