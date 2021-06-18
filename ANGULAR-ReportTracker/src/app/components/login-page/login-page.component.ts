@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthApiService } from '../../services/authentication/auth-api.service';
+import jwt_decode from "jwt-decode";
 
 @Component({
   selector: 'app-login-page',
@@ -9,14 +10,14 @@ import { AuthApiService } from '../../services/authentication/auth-api.service';
 })
 export class LoginPageComponent implements OnInit {
 
-  UserName: string = "test";
-  UserPassword: string = "password";
+  UserName: string = "";
+  UserPassword: string = "";
 
   constructor(private router:Router, private auth: AuthApiService) { }
 
   ngOnInit(): void {
     console.log("init: " + localStorage.getItem('token'));
-    
+
   }
 
   /*Login user with provided username and password */
@@ -26,19 +27,20 @@ export class LoginPageComponent implements OnInit {
     this.auth.authtest(this.UserName, this.UserPassword).subscribe(
       (resp)=>{
         var response = JSON.stringify(resp)
-        console.log("string: " + response);
-        console.log("token: " + resp['Value']['token']);
-        console.log("type: " + resp['Value']['type']);
         localStorage.setItem('token', resp['Value']['token']);
-        var type = resp['Value']['type'];
+        var token = resp['Value']['token'];
+        var decoded = jwt_decode<any>(token);
+        var type = decoded['AccountType'];
+        console.log("type is " );
         // 1 for developer
-        if(type == 1){
-          
-        }
-        else if(type == 2){
-
+        if(type == 2){
+          this.router.navigate(['admin-panel']);
         }
         // 2 for customer
+        else if(type == 1){
+          this.router.navigate(['home']);
+        }
+      
       },
       (error)=>{
         console.log("error " + error.status)

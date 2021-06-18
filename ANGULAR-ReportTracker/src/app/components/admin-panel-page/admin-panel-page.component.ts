@@ -12,4 +12,9 @@ export class AdminPanelPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  option: Number = 1;
+
+  changeMenu(opt:number){
+    this.option = opt
+  }
 }

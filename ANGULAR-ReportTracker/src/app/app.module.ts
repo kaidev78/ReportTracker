@@ -16,6 +16,8 @@ import { CustomerNavbarComponent } from './components/customer-navbar/customer-n
 import { SearchPageComponent } from './components/search-page/search-page.component';
 import { ProductIssuePageComponent } from './components/product-issue-page/product-issue-page.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
+import { AdminProjectListPanelComponent } from './components/admin-project-list-panel/admin-project-list-panel.component';
+import { AdminNewProjectFormComponent } from './components/admin-new-project-form/admin-new-project-form.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { RegisterPageComponent } from './components/register-page/register-page.
     CustomerNavbarComponent,
     SearchPageComponent,
     ProductIssuePageComponent,
-    RegisterPageComponent
+    RegisterPageComponent,
+    AdminProjectListPanelComponent,
+    AdminNewProjectFormComponent
   ],
   imports: [
     BrowserModule,

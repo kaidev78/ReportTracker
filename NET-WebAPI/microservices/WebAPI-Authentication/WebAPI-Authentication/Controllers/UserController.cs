@@ -78,7 +78,7 @@ namespace WebAPI_Authentication.Controllers
                             + @"'";
             Console.WriteLine("query is " + query);
             DataTable dataTable = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ReportTrackerDBCon");
+            string sqlDataSource = _configuration.GetConnectionString("ReportTrackerAuthDBCon");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -106,7 +106,7 @@ namespace WebAPI_Authentication.Controllers
 
             string query = @"SELECT * FROM dbo.Users WHERE UserName = '" + user.UserName + "'";
             DataTable dataTable = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ReportTrackerDBCon");
+            string sqlDataSource = _configuration.GetConnectionString("ReportTrackerAuthDBCon");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -131,9 +131,9 @@ namespace WebAPI_Authentication.Controllers
                 query = @"INSERT into dbo.Users VALUES ('" +
                 user.UserName + @"', '" +
                 user.UserPassword + @"', '" +
+                user.UserEmail + @"', '" +
                 DateTime.Now + @"', '" +
-                user.UserType + @"', '" +
-                user.UserEmail + @"')";
+                user.UserType + @"')";
                 Console.WriteLine("query is " + query);
                 dataTable = new DataTable();
                 using (SqlConnection myCon = new SqlConnection(sqlDataSource))
@@ -155,7 +155,8 @@ namespace WebAPI_Authentication.Controllers
 
         [HttpPost("/user/authtest")]
         public IActionResult Authenticate([FromBody] UserLogin userLogin) {
-            var token = _jwtAuthentication.Authenticate(userLogin.UserName, userLogin.UserPassword);
+            string redisDataSource = _configuration.GetConnectionString("ReportTrackerRedisCon");
+            var token = _jwtAuthentication.Authenticate(userLogin.UserName, userLogin.UserPassword, redisDataSource);
             if (token == null) return Unauthorized();
             Console.WriteLine("token is :" + token);
             UserCred cred = new UserCred { token = token, type = 1 };

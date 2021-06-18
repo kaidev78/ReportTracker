@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>WebAPI_ProductService</RootNamespace>
+    <RootNamespace>WebAPI_Publisher</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
+    <ItemGroup>
     <None Remove="NSwag.AspNetCore" />
     <None Remove="MassTransit" />
     <None Remove="MassTransit.RabbitMQ" />
@@ -19,8 +19,6 @@
     <None Remove="Microsoft.AspNetCore.Authentication" />
     <None Remove="System.IdentityModel.Tokens.Jwt" />
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
-    <None Remove="Consumer\" />
-    <None Remove="Database\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NSwag.AspNetCore" Version="13.11.3" />
@@ -38,8 +36,5 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Authentication\" />
-    <Folder Include="Consumer\" />
-    <Folder Include="Database\" />
   </ItemGroup>
-
 </Project>

@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
+using WebAPI_ProductService.Consumer;
 
 namespace WebAPI_ProductService
 {
@@ -45,14 +46,24 @@ namespace WebAPI_ProductService
             // Configure RabbitMQ service
             services.AddMassTransit(x =>
             {
-                x.UsingRabbitMq();
+                x.AddConsumer<ProductConsumer>();
+
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.ReceiveEndpoint("product-queue", e =>
+                    {
+                        e.ConfigureConsumer<ProductConsumer>(context);
+                    });
+                });
             });
+
+            services.AddMassTransitHostedService();
 
             //JSON serialization
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
-            services.AddMassTransitHostedService();
+            
 
             //Add authorization service
             var key = "ThisIsMySimpleJwtKey"; //temporary key

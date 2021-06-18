@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable, of, throwError} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import { User } from '../models/User';
+import { Product } from '../models/Product';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -9,7 +10,8 @@ import { catchError } from 'rxjs/operators';
 })
 export class WebApiService {
 
-  private registerUrl = 'http://localhost:5000/user/register';
+  private registerUrl = 'http://localhost:5001/user/register';
+  private addProductUrl = 'http://localhost:5000/api/Product';
   constructor(private http:HttpClient) { }
 
   private handleError(error: HttpErrorResponse) {
@@ -35,5 +37,12 @@ export class WebApiService {
     return this.http.post(this.registerUrl, user).pipe(
       catchError(this.handleError)
     );
+  }
+
+  addProduct(product: Product): Observable<any>{
+    console.log("add product is called");
+    return this.http.post(this.addProductUrl, product).pipe(
+      catchError(this.handleError)
+    )
   }
 }

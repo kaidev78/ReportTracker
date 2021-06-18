@@ -9,7 +9,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class AuthApiService {
 
-  private authUrl = 'http://localhost:5000/user/authtest';
+  private authUrl = 'http://localhost:5001/user/authtest';
   constructor(private http:HttpClient) { }
 
   private handleError(error: HttpErrorResponse) {

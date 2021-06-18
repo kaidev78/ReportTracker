@@ -13,10 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Serialization;
-using WebAPI_Authentication.Authentication;
 
-namespace WebAPI_Authentication
+namespace WebAPI_Publisher
 {
     public class Startup
     {
@@ -32,28 +30,16 @@ namespace WebAPI_Authentication
         {
             services.AddControllers();
 
-            //Cors
-            services.AddCors(c =>
-            {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin()
-                                                             .AllowAnyMethod()
-                                                             .AllowAnyHeader());
-            });
-
-            // Register the Swagger services
-            services.AddSwaggerDocument();
-
-            // Configure RabbitMQ service
+            // Mass Transit Configuration
             services.AddMassTransit(x =>
             {
                 x.UsingRabbitMq();
             });
 
-            //JSON serialization
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
-                .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             services.AddMassTransitHostedService();
+
+            // Register the Swagger services
+            services.AddSwaggerDocument();
 
             //Add authorization service
             var key = "ThisIsMySimpleJwtKey"; //temporary key
@@ -72,8 +58,6 @@ namespace WebAPI_Authentication
                     ValidateAudience = false
                 };
             });
-            services.AddSingleton<IJwtAuthenticationManager, JwtAuthenticationManager>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,7 +68,6 @@ namespace WebAPI_Authentication
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors("AllowOrigin");
             app.UseRouting();
 
             app.UseAuthentication();

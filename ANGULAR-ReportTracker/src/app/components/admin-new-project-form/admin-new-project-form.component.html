@@ -1,0 +1,13 @@
+<form class="productForm">
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Product Name:</label>
+        <input type="name" class="form-control" id="exampleFormControlInput1"  [(ngModel)]="ProductName" name="ProductName" placeholder="Product Name">
+      </div>
+
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Product Description:</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" [(ngModel)]="ProductDescription" name="ProductDescription" placeholder="Product Description" rows="3"></textarea>
+      </div>
+
+    <button class="btn btn-success mt-3" (click)="submitProductForm()">Submit New Product</button>
+</form>

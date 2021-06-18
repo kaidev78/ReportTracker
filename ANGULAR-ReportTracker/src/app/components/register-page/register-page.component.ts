@@ -43,7 +43,7 @@ export class RegisterPageComponent implements OnInit {
         (resp)=>{
           console.log("response: " + resp);
           console.log("sucessfull registered");
-          this.router.navigate(['login']);
+          this.router.navigate(['']);
 
         },
         (error)=>{

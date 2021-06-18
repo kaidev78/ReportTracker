@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using WebAPI_ProductService.Models;
 using StackExchange.Redis;
 using Microsoft.AspNetCore.Authorization;
+using System.Data;
+using System.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,9 +20,14 @@ namespace WebAPI_ProductService.Controllers
     public class ProductController : Controller
     {
         private readonly IBusControl _bus;
+        private readonly IConfiguration _configuration;
 
-        public ProductController(IBusControl bus) {
+        public ProductController(
+            IBusControl bus,
+            IConfiguration configuration
+            ) {
             _bus = bus;
+            _configuration = configuration;
         }
 
         // GET: api/values
@@ -31,14 +39,10 @@ namespace WebAPI_ProductService.Controllers
 
         // POST
         [HttpPost]
-        public async Task<IActionResult> CreateProduct(Product product)
+        public async Task<IActionResult> CreateProduct([FromBody]Product product)
         {
-            Uri uri = new Uri("rabbitmq://localhost/hello-world-queue");
 
-            await Console.Out.WriteLineAsync(product.ProductName);
-            var endPoint = await _bus.GetSendEndpoint(uri);
-            await endPoint.Send(product);
-
+            
             return Ok(product.ProductName);
         }
 
@@ -61,12 +65,13 @@ namespace WebAPI_ProductService.Controllers
         {
         }
 
+        [AllowAnonymous]
         [HttpGet("/cache")]
         public void GetCache()
         {
             ConnectionMultiplexer muxer = ConnectionMultiplexer.Connect("localhost:6379");
             IDatabase conn = muxer.GetDatabase();
-            var value = conn.StringGet("test");
+            var value = conn.StringGet("TEST");
             Console.WriteLine(value);
             muxer.Close();
         }
