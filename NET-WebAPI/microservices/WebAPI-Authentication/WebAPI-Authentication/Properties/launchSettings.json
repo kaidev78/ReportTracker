@@ -19,9 +19,9 @@
     },
     "WebAPI_Authentication": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "weatherforecast",
-      "applicationUrl": "http://localhost:5001",
+      "launchBrowser": false,
+      //"launchUrl": "weatherforecast",
+      //"applicationUrl": "http://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

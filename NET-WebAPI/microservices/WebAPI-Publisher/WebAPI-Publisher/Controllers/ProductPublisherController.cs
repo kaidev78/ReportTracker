@@ -62,16 +62,11 @@ namespace WebAPI_Publisher.Controllers
             return Ok("creation request sucessfully sent");
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("/send-issue")]
+        public async Task<IActionResult> SendIssue([FromBody] Issue issue)
         {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            await _publishEndpoint.Publish(issue);
+            return Ok("issue submission request sucessfully sent");
         }
     }
 }

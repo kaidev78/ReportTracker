@@ -12,4 +12,7 @@ export class CustomerNavbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  logout(): void{
+    console.log("logged out");
+  }
 }

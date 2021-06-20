@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import {  WebApiService } from '../../services/web-api.service';
+import { Product } from '../../models/Product';
 @Component({
   selector: 'app-admin-project-list-panel',
   templateUrl: './admin-project-list-panel.component.html',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminProjectListPanelComponent implements OnInit {
 
-  constructor() { }
+  constructor(private webApiService: WebApiService) { }
 
+  products = [];  
   ngOnInit(): void {
+    this.webApiService.getProducts().subscribe(
+      (resp)=>{
+        console.log(resp.Value);
+        this.products = resp.Value;
+      },
+      (error)=>{
+        console.log(error);
+      }
+    );
   }
 
 }

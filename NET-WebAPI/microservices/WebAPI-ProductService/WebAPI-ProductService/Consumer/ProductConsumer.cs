@@ -31,11 +31,13 @@ namespace WebAPI_ProductService.Consumer
             IDatabase conn = muxer.GetDatabase();
             string redisRecord = conn.StringGet(token);
             int developerid;
+            string developername;
             if (redisRecord != null)
             {
                 Console.WriteLine("redis record is " + redisRecord);
                 string[] userinfo = redisRecord.Split(',');
                 developerid = Int32.Parse(userinfo[2]);
+                developername = userinfo[0];
             }
             else
             {
@@ -48,16 +50,19 @@ namespace WebAPI_ProductService.Consumer
                 Console.WriteLine("username is " + getUserName);
                 DataTable dataTable = _databaseOperation.getUserInfo(getUserName);
                 developerid = (int)dataTable.Rows[0]["UserId"];
+                developername = (string)dataTable.Rows[0]["UserName"];
             }
             Product newProduct = new Product {
                 ProductName = context.Message.ProductName,
                 ProductDescription = context.Message.ProductDescription,
-                DeveloperId = developerid
+                DeveloperId = developerid,
+                DeveloperName = developername
             };
 
             _databaseOperation.createProduct(newProduct);
             await Console.Out.WriteLineAsync("new product created, developer id: " + newProduct.DeveloperId
-                + " product name: " + newProduct.ProductName + " product description: " + newProduct.ProductDescription);
+                + " product name: " + newProduct.ProductName + " product description: " + newProduct.ProductDescription
+                + " developer name: " + newProduct.DeveloperName);
         }
     }
 }

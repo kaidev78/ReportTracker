@@ -12,35 +12,33 @@
     </nav>
     
     <div class="container-fluid">
-      <div class="row">
+      <div class="row ">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a [ngClass]="option==1 ? 'nav-link active' : 'nav-link' "  (click)="changeMenu(1)">
+                <a  routerLink="/admin-panel/project-list" 
+                    class="nav-link" 
+                    (click)="changeMenu($event)"
+                    [ngClass]="getRouter.url==='/admin-panel/project-list' ? 'nav-link active' : 'nav-link' " >
                   Project List
                 </a>
               </li>
               <li class="nav-item">
-                <a [ngClass]="option==2 ? 'nav-link active' : 'nav-link' "  (click)="changeMenu(2)">
+                <a routerLink="/admin-panel/create-project"
+                   class="nav-link"
+                   (click)="changeMenu($event)"
+                   [ngClass]="getRouter.url==='/admin-panel/create-project' ? 'nav-link active' : 'nav-link' " 
+                   >
                   Create New Project
-                </a>
-              </li>
-              <li class="nav-item">
-                <a [ngClass]="option==3 ? 'nav-link active' : 'nav-link' "  (click)="changeMenu(3)">
-                  Customer List
-                </a>
-              </li>
-              <li class="nav-item">
-                <a [ngClass]="option==4 ? 'nav-link active' : 'nav-link' "  (click)="changeMenu(4)">
-                  Edit Profile
                 </a>
               </li>
             </ul>
           </div>
         </nav>
-        <div class="display-menu" *ngIf="option==1">DISPLAY 1234456789123234234234235345</div>
-        <div class="display-menu" *ngIf="option==2"><app-admin-new-project-form></app-admin-new-project-form></div>
+        <div class="display-menu">
+          <router-outlet></router-outlet>     
+        </div>
       </div>
     </div>
   </body>

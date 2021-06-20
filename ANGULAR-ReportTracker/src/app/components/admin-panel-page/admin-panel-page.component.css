@@ -1,13 +1,7 @@
 body {
     font-size: .875rem;
   }
-  
-  .feather {
-    width: 16px;
-    height: 16px;
-    vertical-align: text-bottom;
-  }
-  
+    
   /*
    * Sidebar
    */
@@ -37,11 +31,6 @@ body {
     color: #333;
   }
   
-  .sidebar .nav-link .feather {
-    margin-right: 4px;
-    color: #999;
-  }
-  
   .sidebar .nav-link.active {
     color: #007bff;
   }
@@ -64,7 +53,11 @@ body {
 
   .display-menu{
     margin-top: 5%;
-    margin-left: 40%;
+    margin-left: 30%;
+    width: 50%;
   }
+
+
+
 
   

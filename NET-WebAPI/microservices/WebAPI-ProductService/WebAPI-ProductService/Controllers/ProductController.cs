@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using WebAPI_ProductService.Database;
+using System.IdentityModel.Tokens.Jwt;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,6 +23,7 @@ namespace WebAPI_ProductService.Controllers
     {
         private readonly IBusControl _bus;
         private readonly IConfiguration _configuration;
+        private readonly ProductDBOperation _databaseOperation;
 
         public ProductController(
             IBusControl bus,
@@ -28,6 +31,8 @@ namespace WebAPI_ProductService.Controllers
             ) {
             _bus = bus;
             _configuration = configuration;
+            _databaseOperation = new ProductDBOperation(_configuration.GetConnectionString("ReportTrackerDBCon"),
+    _configuration.GetConnectionString("ReportTrackerAuthDBCon"));
         }
 
         // GET: api/values
@@ -37,33 +42,46 @@ namespace WebAPI_ProductService.Controllers
             return new string[] { "value1", "value2" };
         }
 
+        // GET: api/values
+        [HttpGet("{productId}")]
+        public IActionResult GetProduct(int productId)
+        {
+            Console.WriteLine(productId);
+            return Ok(_databaseOperation.getProduct(productId));
+        }
+
+        [HttpGet("/search/{searchName}")]
+        public IActionResult searchProduct(string searchName)
+        {
+            Console.WriteLine("user is searching " + searchName);
+            return Ok(_databaseOperation.getSearchResultsByName(searchName));
+        }
+
         // POST
-        [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody]Product product)
-        {
+        //[HttpPost]
+        //public async Task<IActionResult> CreateProduct([FromBody]Product product)
+        //{
+        //    return Ok(product.ProductName);
+        //}
 
-            
-            return Ok(product.ProductName);
+        [HttpGet("/product-list")]
+        public IActionResult GetProducts()
+        {
+            string token = Request.Headers["Authorization"];
+            token = token.Split(' ')[1];
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadJwtToken(token);
+            var tokenS = jsonToken as JwtSecurityToken;
+            var getUserName = tokenS.Claims.First(claim => claim.Type == "unique_name").Value;
+            return Ok(_databaseOperation.getProducts(getUserName));
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+        [HttpGet("/product-issue/{productId}")]
+        public IActionResult GetProductIssue(int productId) {
+            return Ok(_databaseOperation.getProductIssue(productId));
         }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
 
         [AllowAnonymous]
         [HttpGet("/cache")]

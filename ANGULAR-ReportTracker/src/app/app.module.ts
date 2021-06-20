@@ -18,6 +18,7 @@ import { ProductIssuePageComponent } from './components/product-issue-page/produ
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { AdminProjectListPanelComponent } from './components/admin-project-list-panel/admin-project-list-panel.component';
 import { AdminNewProjectFormComponent } from './components/admin-new-project-form/admin-new-project-form.component';
+import { CreateIssueFormComponent } from './components/create-issue-form/create-issue-form.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AdminNewProjectFormComponent } from './components/admin-new-project-for
     ProductIssuePageComponent,
     RegisterPageComponent,
     AdminProjectListPanelComponent,
-    AdminNewProjectFormComponent
+    AdminNewProjectFormComponent,
+    CreateIssueFormComponent
   ],
   imports: [
     BrowserModule,

@@ -47,12 +47,18 @@ namespace WebAPI_ProductService
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<ProductConsumer>();
+                x.AddConsumer<IssueConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.ReceiveEndpoint("product-queue", e =>
                     {
                         e.ConfigureConsumer<ProductConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint("issue-queue", e =>
+                    {
+                        e.ConfigureConsumer<IssueConsumer>(context);
                     });
                 });
             });

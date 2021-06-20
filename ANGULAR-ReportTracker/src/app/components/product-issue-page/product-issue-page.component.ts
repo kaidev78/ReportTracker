@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { IssueRetrieve } from 'src/app/models/IssueRetrieve';
+import { ProductRetrieve } from 'src/app/models/ProductRetrieve';
+import { WebApiService } from '../../services/web-api.service';
+import { IssueStatus,IssueType } from '../../../enum/IssueEnum';
 
 @Component({
   selector: 'app-product-issue-page',
@@ -7,9 +12,49 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductIssuePageComponent implements OnInit {
 
-  constructor() { }
+  products: any = [];
+  issues: IssueRetrieve[] = [];
+  constructor(private router: Router, private webApiService: WebApiService,
+              private activatedRoute: ActivatedRoute) {
+   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(
+      params => {
+        this.webApiService.getProduct(params.productId).subscribe(
+          (resp) => {
+            this.products = resp.Value;
+            var product: ProductRetrieve = resp.Value[0];
+            console.log(this.products);
+            this.webApiService.getProductIssue(product.ProductId).subscribe(
+              (resp)=>{
+                console.log(resp.Value);
+                this.issues = resp.Value;
+              },
+              (error)=>{
+                console.log(error);
+              }
+            )
+          },
+          (error) => {
+            console.log(error);
+          }
+        )
+      }
+    )
+  }
+
+  goIssueForm(){
+    var product: ProductRetrieve = this.products[0]
+    this.router.navigate(['/create-issue'], {queryParams: {productId: product.ProductId, productName: product.ProductName}})
+  }
+
+  getIssueStatus(status: number){
+    return IssueStatus[status];
+  }
+
+  getIssueType(type: number){
+    return IssueType[type];
   }
 
 }

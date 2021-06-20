@@ -2,6 +2,24 @@
     <app-customer-navbar></app-customer-navbar>
 </header>
 
-<div>
-    Search Results
+<div class="project-list">
+    <!-- <li *ngFor="let product of products;"> 
+        {{product.ProductName}}
+      </li> -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Product Name</th>
+            <th scope="col">Product Description</th>
+            <th scope="col">Date Created</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of products">
+                <td><button class="btn" (click)="goIssuePage(product)">{{product["ProductName"]}}</button></td>
+                <td>{{product["ProductDescription"]}}</td>
+                <td>{{product["DateOfJoining"]}}</td>
+            </tr>
+        </tbody>
+      </table>
 </div>

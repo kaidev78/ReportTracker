@@ -1,1 +1,22 @@
-<p>admin-project-list-panel works!</p>
+<div class="project-list">
+    <!-- <li *ngFor="let product of products;"> 
+        {{product.ProductName}}
+      </li> -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Product Name</th>
+            <th scope="col">Product Description</th>
+            <th scope="col">Date Created</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of products">
+                <td><a href="#">{{product["ProductName"]}}</a></td>
+                <td>{{product["ProductDescription"]}}</td>
+                <td>{{product["DateOfJoining"]}}</td>
+            </tr>
+        </tbody>
+      </table>
+</div>
+

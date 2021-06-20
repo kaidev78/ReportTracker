@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-panel-page',
@@ -7,14 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminPanelPageComponent implements OnInit {
 
-  constructor() { }
+  current_url: string = "";
+  getRouter: Router = this.router;
 
-  ngOnInit(): void {
+  constructor(private router: Router) { 
   }
 
-  option: Number = 1;
+  ngOnInit(): void {
+    this.current_url = this.router.url;
+  }
 
-  changeMenu(opt:number){
-    this.option = opt
+
+  changeMenu(event:any){
+    // this.current_url = this.router.url;
   }
 }

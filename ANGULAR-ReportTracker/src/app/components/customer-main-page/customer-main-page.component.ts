@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-main-page',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomerMainPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
 
+  UserSearch: string = "";
+
+  search(event:any){
+    // this.router.navigate
+    this.router.navigate(['/search'], {queryParams: {usersearch: this.UserSearch}})
+  }
+  
 }

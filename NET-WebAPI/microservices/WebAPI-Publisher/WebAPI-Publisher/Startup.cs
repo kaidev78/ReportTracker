@@ -30,6 +30,14 @@ namespace WebAPI_Publisher
         {
             services.AddControllers();
 
+            //Cors
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin()
+                                                             .AllowAnyMethod()
+                                                             .AllowAnyHeader());
+            });
+
             // Mass Transit Configuration
             services.AddMassTransit(x =>
             {
@@ -68,6 +76,7 @@ namespace WebAPI_Publisher
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("AllowOrigin");
             app.UseRouting();
 
             app.UseAuthentication();
