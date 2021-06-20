@@ -15,6 +15,8 @@ import { RegisterPageComponent } from './components/register-page/register-page.
 import { AdminProjectListPanelComponent } from './components/admin-project-list-panel/admin-project-list-panel.component';
 import { AdminNewProjectFormComponent } from './components/admin-new-project-form/admin-new-project-form.component';
 import { CreateIssueFormComponent } from './components/create-issue-form/create-issue-form.component';
+import { IssueDisplayPageComponent } from './components/issue-display-page/issue-display-page.component';
+import { IssueAdminPanelComponent } from './components/issue-admin-panel/issue-admin-panel.component';
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent },
@@ -26,7 +28,9 @@ const routes: Routes = [
   {path: 'search', component: SearchPageComponent},
   {path: 'register', component: RegisterPageComponent},
   {path: 'issues', component: ProductIssuePageComponent},
-  {path: 'create-issue', component: CreateIssueFormComponent}
+  {path: 'create-issue', component: CreateIssueFormComponent},
+  {path: 'issue-display', component: IssueDisplayPageComponent},
+  {path: 'issue-admin-panel', component: IssueAdminPanelComponent}
 ];
 
 @NgModule({

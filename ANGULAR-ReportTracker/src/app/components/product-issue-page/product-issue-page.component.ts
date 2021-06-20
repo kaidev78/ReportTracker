@@ -26,7 +26,7 @@ export class ProductIssuePageComponent implements OnInit {
             this.products = resp.Value;
             var product: ProductRetrieve = resp.Value[0];
             console.log(this.products);
-            this.webApiService.getProductIssue(product.ProductId).subscribe(
+            this.webApiService.getProductIssues(product.ProductId).subscribe(
               (resp)=>{
                 console.log(resp.Value);
                 this.issues = resp.Value;
@@ -55,6 +55,10 @@ export class ProductIssuePageComponent implements OnInit {
 
   getIssueType(type: number){
     return IssueType[type];
+  }
+
+  goIssueDisplayPage(issueId: number){
+    this.router.navigate(['/issue-display'], {queryParams: {issueId: issueId}})
   }
 
 }

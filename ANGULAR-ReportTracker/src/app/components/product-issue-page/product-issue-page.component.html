@@ -24,8 +24,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let issue of issues">
-                <td>{{issue.IssueName}}</td>
-                <!-- <td>{{issue.IssueDescription}}</td> -->
+                <td><button class="btn" (click)="goIssueDisplayPage(issue.IssueId)">{{issue.IssueName}}</button></td>
                 <td>{{getIssueType(issue.IssueType)}}</td>
                 <td>{{getIssueStatus(issue.IssueStatus)}}</td>
                 <td>{{issue.CreatedAt}}</td>

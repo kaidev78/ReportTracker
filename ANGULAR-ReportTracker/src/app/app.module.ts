@@ -19,6 +19,8 @@ import { RegisterPageComponent } from './components/register-page/register-page.
 import { AdminProjectListPanelComponent } from './components/admin-project-list-panel/admin-project-list-panel.component';
 import { AdminNewProjectFormComponent } from './components/admin-new-project-form/admin-new-project-form.component';
 import { CreateIssueFormComponent } from './components/create-issue-form/create-issue-form.component';
+import { IssueDisplayPageComponent } from './components/issue-display-page/issue-display-page.component';
+import { IssueAdminPanelComponent } from './components/issue-admin-panel/issue-admin-panel.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { CreateIssueFormComponent } from './components/create-issue-form/create-
     RegisterPageComponent,
     AdminProjectListPanelComponent,
     AdminNewProjectFormComponent,
-    CreateIssueFormComponent
+    CreateIssueFormComponent,
+    IssueDisplayPageComponent,
+    IssueAdminPanelComponent
   ],
   imports: [
     BrowserModule,

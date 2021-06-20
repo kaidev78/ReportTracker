@@ -1,0 +1,35 @@
+<header>
+    <app-customer-navbar></app-customer-navbar>
+</header>
+
+<div *ngIf="issue != null" class="text-center mt-3 border-bottom">
+    <div class="h1">{{issue.IssueName}}</div>
+
+    <div class="row ">
+        <div class="col-sm-3 border">
+            Description
+        </div>
+        <div class="col border">
+            {{issue.IssueDescription}}
+        </div>
+    </div>
+
+    <div class="row ">
+        <div class="col-sm-3 border">
+            Issue Type
+        </div>
+        <div class="col border">
+            {{getIssueType(issue.IssueType)}}
+        </div>
+  </div>
+
+  <div class="row ">
+    <div class="col-sm-3 border">
+        Issue Status
+    </div>
+    <div class="col border">
+        {{getIssueStatus(issue.IssueStatus)}}
+    </div>
+</div>
+
+</div>

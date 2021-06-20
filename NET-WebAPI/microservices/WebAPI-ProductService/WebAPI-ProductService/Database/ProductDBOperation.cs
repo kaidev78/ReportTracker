@@ -165,5 +165,25 @@ namespace WebAPI_ProductService.Database
             return new JsonResult(dataTable);
         }
 
+        public JsonResult getIssue(int issueId)
+        {
+            SqlDataReader myReader;
+            DataTable dataTable = new DataTable();
+            string query = @"select * from dbo.Issue WHERE IssueId = "
+                            + issueId;
+            using (SqlConnection myCon = new SqlConnection(_productDBConn))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    dataTable.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(dataTable);
+        }
+
     }
 }

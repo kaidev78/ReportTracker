@@ -1,4 +1,5 @@
 export interface IssueRetrieve{
+    IssueId: number;
     ProductId: number;
     IssueType: number;
     IssueName: string;

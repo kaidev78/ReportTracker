@@ -77,11 +77,17 @@ namespace WebAPI_ProductService.Controllers
         }
 
 
-        [HttpGet("/product-issue/{productId}")]
-        public IActionResult GetProductIssue(int productId) {
+        [HttpGet("/product-issues/{productId}")]
+        public IActionResult GetProductIssues(int productId) {
             return Ok(_databaseOperation.getProductIssue(productId));
         }
-        
+
+        [HttpGet("/product-issue/{issueId}")]
+        public IActionResult GetProductIssue(int issueId)
+        {
+            return Ok(_databaseOperation.getIssue(issueId));
+        }
+
 
         [AllowAnonymous]
         [HttpGet("/cache")]

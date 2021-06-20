@@ -17,6 +17,7 @@ export class WebApiService {
   private getSearchResultsUrl = 'http://localhost:5000/search/';
   private getProductUrl = 'http://localhost:5000/api/Product/';
   private sendIssueUrl = 'http://localhost:5002/send-issue';
+  private getProductIssuesUrl = 'http://localhost:5000/product-issues/';
   private getProductIssueUrl = 'http://localhost:5000/product-issue/';
 
   constructor(private http:HttpClient) { }
@@ -90,11 +91,16 @@ export class WebApiService {
     );
   }
 
-  getProductIssue(productId: number): Observable<any>{
+  getProductIssues(productId: number): Observable<any>{
     const headers = new HttpHeaders()
     .set("Authorization", "Bearer " + localStorage.getItem("token"));
-    return this.http.get(this.getProductIssueUrl+productId, {"headers": headers});
+    return this.http.get(this.getProductIssuesUrl+productId, {"headers": headers});
   }
 
+  getProductIssue(issueId: number): Observable<any>{
+    const headers = new HttpHeaders()
+    .set("Authorization", "Bearer " + localStorage.getItem("token"));
+    return this.http.get(this.getProductIssueUrl+issueId, {"headers": headers});
+  }
 
 }
