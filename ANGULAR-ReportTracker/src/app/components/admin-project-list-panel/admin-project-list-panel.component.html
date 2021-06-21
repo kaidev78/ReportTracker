@@ -12,7 +12,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let product of products">
-                <td><a href="#">{{product["ProductName"]}}</a></td>
+                <td><a [routerLink]="['/issue-admin-panel', product['ProductId']]">{{product["ProductName"]}}</a></td>
                 <td>{{product["ProductDescription"]}}</td>
                 <td>{{product["DateOfJoining"]}}</td>
             </tr>

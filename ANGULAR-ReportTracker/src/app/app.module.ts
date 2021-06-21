@@ -21,6 +21,8 @@ import { AdminNewProjectFormComponent } from './components/admin-new-project-for
 import { CreateIssueFormComponent } from './components/create-issue-form/create-issue-form.component';
 import { IssueDisplayPageComponent } from './components/issue-display-page/issue-display-page.component';
 import { IssueAdminPanelComponent } from './components/issue-admin-panel/issue-admin-panel.component';
+import { AdminNavbarComponent } from './components/admin-navbar/admin-navbar.component';
+import { AdminIssueEditComponent } from './components/admin-issue-edit/admin-issue-edit.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { IssueAdminPanelComponent } from './components/issue-admin-panel/issue-a
     AdminNewProjectFormComponent,
     CreateIssueFormComponent,
     IssueDisplayPageComponent,
-    IssueAdminPanelComponent
+    IssueAdminPanelComponent,
+    AdminNavbarComponent,
+    AdminIssueEditComponent
   ],
   imports: [
     BrowserModule,

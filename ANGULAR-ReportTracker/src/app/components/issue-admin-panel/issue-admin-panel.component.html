@@ -1,1 +1,26 @@
-<p>issue-admin-panel works!</p>
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <app-admin-navbar></app-admin-navbar>
+</nav>
+
+<div class="issue-list mt-2">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Issue</th>
+          <!-- <th scope="col">Issue Description</th> -->
+          <th scope="col">Issue Type</th>
+          <th scope="col">Issue Status</th>
+          <th scope="col">Date Created</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let issue of issues">
+              <td><button class="btn" [routerLink]="['/admin-issue-edit', issue.IssueId]">{{issue.IssueName}}</button></td>
+              <td>{{getIssueType(issue.IssueType)}}</td>
+              <td>{{getIssueStatus(issue.IssueStatus)}}</td>
+              <td>{{issue.CreatedAt}}</td>
+              <button class="btn text-danger">Delete</button>
+          </tr>
+      </tbody>
+    </table>
+</div>

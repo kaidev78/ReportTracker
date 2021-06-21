@@ -1,0 +1,46 @@
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <app-admin-navbar></app-admin-navbar>
+</nav>
+
+<div *ngIf="issue != null" class="text-center mt-3 border-bottom">
+    <div class="h1">{{issue.IssueName}}</div>
+
+    <div class="row ">
+        <div class="col-sm-3 border">
+            Description
+        </div>
+        <div class="col border">
+            {{issue.IssueDescription}}
+        </div>
+    </div>
+
+    <div class="row ">
+        <div class="col-sm-3 border">
+            Issue Type
+        </div>
+        <div class="col border">
+            {{getIssueType(issue.IssueType)}}
+        </div>
+  </div>
+
+  <div class="row ">
+    <div class="col-sm-3 border">
+        Issue Status
+    </div>
+    <div class="col border">
+        {{getIssueStatus(issue.IssueStatus)}}
+    </div>
+</div>
+</div>
+
+<div class="text-center mt-5">
+    <div>Update Status: </div>
+    <select class="form-select" id="singleSelect" [(ngModel)]="StatusOption" name="StatusOption">
+        <option value=1>Unverified</option>
+        <option value=2>Confirmed</option>
+        <option value=3>Solved</option>
+        <option value=4>In-Progress</option>
+      </select>
+    <button class="btn btn-success mt-2" (click)="updateStatus()">Update</button>
+</div>
+

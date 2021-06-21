@@ -17,6 +17,7 @@ import { AdminNewProjectFormComponent } from './components/admin-new-project-for
 import { CreateIssueFormComponent } from './components/create-issue-form/create-issue-form.component';
 import { IssueDisplayPageComponent } from './components/issue-display-page/issue-display-page.component';
 import { IssueAdminPanelComponent } from './components/issue-admin-panel/issue-admin-panel.component';
+import { AdminIssueEditComponent } from './components/admin-issue-edit/admin-issue-edit.component';
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent },
@@ -30,7 +31,8 @@ const routes: Routes = [
   {path: 'issues', component: ProductIssuePageComponent},
   {path: 'create-issue', component: CreateIssueFormComponent},
   {path: 'issue-display', component: IssueDisplayPageComponent},
-  {path: 'issue-admin-panel', component: IssueAdminPanelComponent}
+  {path: 'issue-admin-panel/:productId', component: IssueAdminPanelComponent},
+  {path: 'admin-issue-edit/:issueId', component: AdminIssueEditComponent}
 ];
 
 @NgModule({
