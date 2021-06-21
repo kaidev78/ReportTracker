@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using WebAPI_Authentication.Authentication;
+using WebAPI_Authentication.BackgroundTask;
 
 namespace WebAPI_Authentication
 {
@@ -73,6 +74,7 @@ namespace WebAPI_Authentication
                 };
             });
             services.AddSingleton<IJwtAuthenticationManager, JwtAuthenticationManager>();
+            services.AddHostedService<CleanExpireTokenTask>();
 
         }
 

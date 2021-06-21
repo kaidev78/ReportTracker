@@ -162,6 +162,8 @@ namespace WebAPI_Authentication.Controllers
             UserCred cred = new UserCred { token = token, type = 1 };
             return Ok(new JsonResult(cred));
         }
+
+
     }
 
 }

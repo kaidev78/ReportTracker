@@ -19,6 +19,8 @@
     <None Remove="Microsoft.AspNetCore.Authentication" />
     <None Remove="System.IdentityModel.Tokens.Jwt" />
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="Database\" />
+    <None Remove="BackgroundTask\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NSwag.AspNetCore" Version="13.11.3" />
@@ -36,6 +38,8 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Authentication\" />
+    <Folder Include="Database\" />
+    <Folder Include="BackgroundTask\" />
   </ItemGroup>
 
 </Project>

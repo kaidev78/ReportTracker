@@ -1,5 +1,8 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import jwt_decode from "jwt-decode";
+import { AccountType } from "../../../enum/AccountTypeEnum";
 
 @Component({
   selector: 'app-admin-panel-page',
@@ -15,6 +18,16 @@ export class AdminPanelPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    var token:any = localStorage.getItem("token");
+    if(token == null){
+      this.router.navigate(['']);
+    }
+    var decoded:any = jwt_decode(token);
+    console.log(decoded["AccountType"]);
+    console.log(AccountType.ADMIN);
+    if(decoded["AccountType"] != AccountType.ADMIN){
+      this.router.navigate(['/home']);
+    }
     this.current_url = this.router.url;
   }
 

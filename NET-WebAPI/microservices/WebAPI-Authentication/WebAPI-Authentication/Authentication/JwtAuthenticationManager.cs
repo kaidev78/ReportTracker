@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
+using WebAPI_Authentication.Database;
 using WebAPI_Authentication.Models;
 
 namespace WebAPI_Authentication.Authentication
@@ -21,11 +22,13 @@ namespace WebAPI_Authentication.Authentication
             { "test", "password" }
         };
         private readonly string key;
+        private readonly AuthDatabaseOperation _authDatabaseOperation;
         private readonly IConfiguration _configuration;
 
         public JwtAuthenticationManager(IConfiguration configuration) {
             this.key = "ThisIsMySimpleJwtKey";
             _configuration = configuration;
+            _authDatabaseOperation = new AuthDatabaseOperation(_configuration.GetConnectionString("ReportTrackerAuthDBCon"));
         }
 
         public string Authenticate(string username, string password, string redisUrl)
@@ -34,25 +37,8 @@ namespace WebAPI_Authentication.Authentication
             //if (!users.Any(u => u.Key == username && u.Value == password)) {
             //    return null;
             //}
-            string query = @"select * from dbo.Users WHERE UserName = '"
-                + username
-                + @"'";
-            Console.WriteLine("query is " + query);
-            DataTable dataTable = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("ReportTrackerAuthDBCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    dataTable.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
 
+            DataTable dataTable = _authDatabaseOperation.getUser(username);
             JsonResult result = new JsonResult(dataTable);
             if (dataTable.Rows.Count <= 0)
             {
@@ -89,6 +75,7 @@ namespace WebAPI_Authentication.Authentication
                     IDatabase conn = muxer.GetDatabase();
                     string redisRecord = userName + "," + userEmail + "," + accountType;
                     conn.StringSet(tokenStr, redisRecord, expireTime - DateTime.UtcNow);
+                    _authDatabaseOperation.addAuthenticatedToken(tokenStr);
                     muxer.Close();
                     return tokenStr;
                 }
