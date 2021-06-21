@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -20,12 +21,15 @@ namespace WebAPI_Authentication.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IJwtAuthenticationManager _jwtAuthentication;
+        private readonly ITokenRefresher _tokenRefresher;
 
         public UserController(
             IConfiguration configuration,
-            IJwtAuthenticationManager jwtAuthenticationManager) {
+            IJwtAuthenticationManager jwtAuthenticationManager,
+            ITokenRefresher tokenRefresher) {
             _configuration = configuration;
             _jwtAuthentication = jwtAuthenticationManager;
+            _tokenRefresher = tokenRefresher;
         }
 
         // GET: api/values
@@ -156,13 +160,23 @@ namespace WebAPI_Authentication.Controllers
         [HttpPost("/user/authtest")]
         public IActionResult Authenticate([FromBody] UserLogin userLogin) {
             string redisDataSource = _configuration.GetConnectionString("ReportTrackerRedisCon");
-            var token = _jwtAuthentication.Authenticate(userLogin.UserName, userLogin.UserPassword, redisDataSource);
-            if (token == null) return Unauthorized();
-            Console.WriteLine("token is :" + token);
-            UserCred cred = new UserCred { token = token, type = 1 };
-            return Ok(new JsonResult(cred));
+            AuthenticationResponse authenticationResponse = _jwtAuthentication.Authenticate(userLogin.UserName, userLogin.UserPassword, redisDataSource);
+            if (authenticationResponse == null) return Unauthorized();
+            Console.WriteLine("token is :" + authenticationResponse);
+            return Ok(new JsonResult(authenticationResponse));
         }
 
+        [AllowAnonymous]
+        [HttpPost("refresh")]
+        public IActionResult Refresh([FromBody] RefreshCred refreshCred)
+        {
+            var token = _tokenRefresher.refresher(refreshCred);
+            if (token == null) {
+                return Unauthorized();
+            }
+
+            return Ok(token);
+        }
 
     }
 

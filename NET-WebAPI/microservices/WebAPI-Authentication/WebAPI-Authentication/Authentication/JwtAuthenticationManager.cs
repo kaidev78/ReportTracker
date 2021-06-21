@@ -24,14 +24,40 @@ namespace WebAPI_Authentication.Authentication
         private readonly string key;
         private readonly AuthDatabaseOperation _authDatabaseOperation;
         private readonly IConfiguration _configuration;
+        private readonly IRefreshTokenGenerator _refreshTokenGenerator;
 
-        public JwtAuthenticationManager(IConfiguration configuration) {
+        public JwtAuthenticationManager(IConfiguration configuration, IRefreshTokenGenerator refreshTokenGenerator) {
             this.key = "ThisIsMySimpleJwtKey";
             _configuration = configuration;
             _authDatabaseOperation = new AuthDatabaseOperation(_configuration.GetConnectionString("ReportTrackerAuthDBCon"));
+            _refreshTokenGenerator = refreshTokenGenerator;
         }
 
-        public string Authenticate(string username, string password, string redisUrl)
+        public AuthenticationResponse Authenticate(string username, Claim[] claims) {
+            var tokenKey = Encoding.ASCII.GetBytes(key);
+            var jwtSecurityToken = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(1),
+                signingCredentials: new SigningCredentials(
+                        new SymmetricSecurityKey(tokenKey),
+                        SecurityAlgorithms.HmacSha256Signature
+                    )
+                );
+
+            // jwt token
+            var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            // create refresh token
+            var refreshToken = _refreshTokenGenerator.GenerateToken();
+            AuthenticationResponse authenticationResponse = new AuthenticationResponse
+            {
+                JwtToken = token,
+                RefreshToken = refreshToken
+            };
+            _authDatabaseOperation.addAuthenticatedToken(authenticationResponse, username);
+            return authenticationResponse;
+        }
+
+        public AuthenticationResponse Authenticate(string username, string password, string redisUrl)
         {
             //will change later
             //if (!users.Any(u => u.Key == username && u.Value == password)) {
@@ -69,15 +95,24 @@ namespace WebAPI_Authentication.Authentication
                     };
 
                     var token = tokenHandler.CreateToken(tokenDescriptor);
+
+                    // create refresh token
+                    var refreshToken = _refreshTokenGenerator.GenerateToken();
+
                     string tokenStr = tokenHandler.WriteToken(token);
                     //cache to redis
                     ConnectionMultiplexer muxer = ConnectionMultiplexer.Connect(redisUrl);
                     IDatabase conn = muxer.GetDatabase();
                     string redisRecord = userName + "," + userEmail + "," + accountType;
                     conn.StringSet(tokenStr, redisRecord, expireTime - DateTime.UtcNow);
-                    _authDatabaseOperation.addAuthenticatedToken(tokenStr);
                     muxer.Close();
-                    return tokenStr;
+                    AuthenticationResponse authenticationResponse = new AuthenticationResponse
+                    {
+                        JwtToken = tokenStr,
+                        RefreshToken = refreshToken
+                    };
+                    _authDatabaseOperation.addAuthenticatedToken(authenticationResponse, username);
+                    return authenticationResponse;
                 }
                 else {
                     return null;
