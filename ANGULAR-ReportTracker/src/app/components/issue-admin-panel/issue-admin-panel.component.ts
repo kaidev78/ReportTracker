@@ -41,4 +41,18 @@ export class IssueAdminPanelComponent implements OnInit {
     return IssueType[type];
   }
 
+  deleteIssue(issueId: number, index: number){
+    console.log("delete " + issueId);
+    console.log("index " + index);
+    this.issues.splice(index, 1);
+    this.webApiService.deleteProductIssue(issueId).subscribe(
+      (resp)=>{
+        console.log(resp);
+      },
+      (error)=>{
+        console.log(error);
+      }
+    )
+  }
+
 }

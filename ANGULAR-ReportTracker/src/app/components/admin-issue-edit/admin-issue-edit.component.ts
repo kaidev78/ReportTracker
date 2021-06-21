@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { IssueRetrieve } from '../../models/IssueRetrieve';
 import { WebApiService } from '../../services/web-api.service';
 import { IssueStatus,IssueType } from '../../../enum/IssueEnum';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
+import { IssueStatus as IssueStatusCode } from '../../models/IssueStatus'
 
 @Component({
   selector: 'app-admin-issue-edit',
@@ -10,9 +11,9 @@ import { ActivatedRoute } from '@angular/router'
   styleUrls: ['./admin-issue-edit.component.css']
 })
 export class AdminIssueEditComponent implements OnInit {
-  issue?: IssueRetrieve;
-  StatusOption?: number = -1;
-  constructor(private route: ActivatedRoute, private webApiService: WebApiService) { }
+  issue: any;
+  StatusOption: any = -1;
+  constructor(private route: ActivatedRoute, private router: Router,private webApiService: WebApiService) { }
 
   ngOnInit(): void {
     var issueId:any = this.route.snapshot.paramMap.get("issueId");
@@ -39,6 +40,19 @@ export class AdminIssueEditComponent implements OnInit {
 
   updateStatus(){
     console.log("status will be updated " + this.StatusOption);
+    var issueStatus: IssueStatusCode = {
+      IssueId: this.issue?.IssueId,
+      IssueStatusCode: this.StatusOption
+    }
+    this.webApiService.updateIssueStatus(issueStatus).subscribe(
+      (resp) => {
+        console.log(resp);
+        this.issue['IssueStatus'] = this.StatusOption;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 
 }

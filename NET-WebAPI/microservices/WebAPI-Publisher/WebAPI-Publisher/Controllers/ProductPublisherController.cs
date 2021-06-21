@@ -66,7 +66,7 @@ namespace WebAPI_Publisher.Controllers
         public async Task<IActionResult> SendIssue([FromBody] Issue issue)
         {
             await _publishEndpoint.Publish(issue);
-            return Ok("issue submission request sucessfully sent");
+            return Ok(new JsonResult("issue submission request sucessfully sent"));
         }
     }
 }

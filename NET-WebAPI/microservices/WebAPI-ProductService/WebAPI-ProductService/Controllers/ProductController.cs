@@ -88,6 +88,17 @@ namespace WebAPI_ProductService.Controllers
             return Ok(_databaseOperation.getIssue(issueId));
         }
 
+        [HttpDelete("/delete-issue/{issueId}")]
+        public IActionResult DeleteIssue(int issueId) {
+            _databaseOperation.deleteIssue(issueId);
+            return Ok("Sucessfully Deleted");
+        }
+
+        [HttpPost("/update-issue-status")]
+        public IActionResult UpdateIssueStatus([FromBody]IssueStatus issueStatus) {
+            JsonResult result = _databaseOperation.updateIssueStatus(issueStatus.IssueId, issueStatus.IssueStatusCode);
+            return Ok(result);
+        }
 
         [AllowAnonymous]
         [HttpGet("/cache")]

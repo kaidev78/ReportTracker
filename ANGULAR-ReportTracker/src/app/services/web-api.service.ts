@@ -5,6 +5,7 @@ import { User } from '../models/User';
 import { Product } from '../models/Product';
 import { catchError } from 'rxjs/operators';
 import { Issue } from '../models/Issue';
+import { IssueStatus } from '../models/IssueStatus';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,8 @@ export class WebApiService {
   private sendIssueUrl = 'http://localhost:5002/send-issue';
   private getProductIssuesUrl = 'http://localhost:5000/product-issues/';
   private getProductIssueUrl = 'http://localhost:5000/product-issue/';
+  private deleteIssueUrl = 'http://localhost:5000/delete-issue/';
+  private updateIssueStatusUrl  = 'http://localhost:5000/update-issue-status';
 
   constructor(private http:HttpClient) { }
 
@@ -101,6 +104,18 @@ export class WebApiService {
     const headers = new HttpHeaders()
     .set("Authorization", "Bearer " + localStorage.getItem("token"));
     return this.http.get(this.getProductIssueUrl+issueId, {"headers": headers});
+  }
+
+  deleteProductIssue(issueId: number): Observable<any>{
+    const headers = new HttpHeaders()
+    .set("Authorization", "Bearer " + localStorage.getItem("token"));
+    return this.http.delete(this.deleteIssueUrl+issueId, {"headers": headers});
+  }
+
+  updateIssueStatus(issueStatus: IssueStatus): Observable<any>{
+    const headers = new HttpHeaders()
+    .set("Authorization", "Bearer " + localStorage.getItem("token"));
+    return this.http.post(this.updateIssueStatusUrl, issueStatus, {"headers": headers});
   }
 
 }

@@ -14,12 +14,12 @@
         </tr>
       </thead>
       <tbody>
-          <tr *ngFor="let issue of issues">
+          <tr *ngFor="let issue of issues; index as i">
               <td><button class="btn" [routerLink]="['/admin-issue-edit', issue.IssueId]">{{issue.IssueName}}</button></td>
               <td>{{getIssueType(issue.IssueType)}}</td>
               <td>{{getIssueStatus(issue.IssueStatus)}}</td>
               <td>{{issue.CreatedAt}}</td>
-              <button class="btn text-danger">Delete</button>
+              <button class="btn text-danger" (click)="deleteIssue(issue.IssueId, i)">Delete</button>
           </tr>
       </tbody>
     </table>

@@ -185,5 +185,43 @@ namespace WebAPI_ProductService.Database
             return new JsonResult(dataTable);
         }
 
+
+        public void deleteIssue(int issueId)
+        {
+            string query = @"DELETE FROM dbo.Issue WHERE IssueId = " + issueId;
+            DataTable dataTable = new DataTable();
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(_productDBConn))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    dataTable.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+        }
+
+        public JsonResult updateIssueStatus(int issueId, int status) {
+            string query = @"UPDATE dbo.Issue SET IssueStatus = " + status
+                + @" WHERE IssueId = " + issueId;
+            DataTable dataTable = new DataTable();
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(_productDBConn))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    dataTable.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(dataTable);
+        }
+
     }
 }
