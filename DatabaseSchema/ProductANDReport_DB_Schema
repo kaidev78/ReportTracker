@@ -1,0 +1,18 @@
+CREATE TABLE dbo.Product(
+    ProductId INT IDENTITY(1,1),
+    DeveloperId INT,
+    DeveloperName VARCHAR(100),
+    ProductName VARCHAR(100),
+    ProductDescription VARCHAR(5000),
+    DateOfJoining DATE
+)
+
+CREATE TABLE dbo.Issue(
+    IssueId INT IDENTITY(1,1),
+    ProductId INT,
+    IssueStatus INT,
+    IssueName VARCHAR(100),
+    IssueDescription VARCHAR(5000),
+    IssueType INT,
+    CreatedAt DATE
+)

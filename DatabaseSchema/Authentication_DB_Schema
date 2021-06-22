@@ -1,0 +1,32 @@
+Report Tracker Authentication Database:
+
+CREATE DATABASE ReportTrackerAuthDB
+
+CREATE TABLE dbo.Users(
+    UserId INT IDENTITY(1,1),
+    UserName VARCHAR(100),
+    UserPassword VARCHAR(512),
+    UserEmail VARCHAR(100),
+    CreatedAt DATE,
+    AccountType INT
+)
+
+CREATE TABLE dbo.AuthenticatedToken(
+    Token VARCHAR(500),
+    UserName VARCHAR(100),
+    Expire DATETIME
+)
+
+Sample query for adding refresh token to the database:
+BEGIN
+    IF NOT EXISTS(
+        SELECT * FROM dbo.AuthenticatedToken WHERE UserName = 'testing2'
+    )
+    BEGIN
+        INSERT into dbo.AuthenticatedToken VALUES ('idk', 'testing2', '02-16-1999')
+    END
+    ELSE 
+    BEGIN
+        UPDATE dbo.AuthenticatedToken SET Expire = '03-16-1999' WHERE UserName = 'testing2'
+    END
+END
