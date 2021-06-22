@@ -129,6 +129,7 @@ namespace WebAPI_ProductService.Database
                             + issue.IssueDescription + @"',"
                             + issue.IssueType + @", '"
                             + DateTime.Now + @"')";
+            Console.WriteLine(query);
             DataTable dataTable = new DataTable();
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(_productDBConn))

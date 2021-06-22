@@ -12,15 +12,19 @@ export class AdminProjectListPanelComponent implements OnInit {
 
   products = [];  
   ngOnInit(): void {
-    this.webApiService.getProducts().subscribe(
-      (resp)=>{
-        console.log(resp.Value);
-        this.products = resp.Value;
-      },
-      (error)=>{
-        console.log(error);
+    this.webApiService.getProducts().then(
+      (service) => {
+        service.subscribe(
+          (resp)=>{
+            console.log(resp.Value);
+            this.products = resp.Value;
+          },
+          (error)=>{
+            console.log(error);
+          }
+        );
       }
-    );
+    )
   }
 
 }

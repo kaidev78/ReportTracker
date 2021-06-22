@@ -21,13 +21,17 @@ export class IssueDisplayPageComponent implements OnInit {
       return;
     }
     var productId:any = this.route.snapshot.queryParamMap.get("issueId");
-    this.webApiService.getProductIssue(productId).subscribe(
-      (resp)=>{
-        this.issue = resp.Value[0];
-        console.log(this.issue);
-      },
-      (error)=>{
-        console.log(error);
+    this.webApiService.getProductIssue(productId).then(
+      (service) => {
+        service.subscribe(
+          (resp)=>{
+            this.issue = resp.Value[0];
+            console.log(this.issue);
+          },
+          (error)=>{
+            console.log(error);
+          }
+        )
       }
     )
   }

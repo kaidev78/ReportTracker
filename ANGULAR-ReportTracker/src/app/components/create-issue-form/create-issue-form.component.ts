@@ -41,14 +41,18 @@ export class CreateIssueFormComponent implements OnInit {
 
     console.log(issue);
 
-    this.webApiService.sendIssue(issue).subscribe(
-      (resp)=>{
-        console.log(resp)
-      },
-      (error)=>{
-        console.log(error)
+    this.webApiService.sendIssue(issue).then(
+      (service)=>{
+        service.subscribe(
+          (resp)=>{
+            console.log(resp)
+          },
+          (error)=>{
+            console.log(error)
+          }
+        )  
       }
-    )    
+    )  
 
   }
 

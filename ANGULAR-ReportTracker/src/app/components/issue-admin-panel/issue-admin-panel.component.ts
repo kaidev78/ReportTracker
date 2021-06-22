@@ -23,15 +23,19 @@ export class IssueAdminPanelComponent implements OnInit {
     }
     var productId:any = this.activatedRoute.snapshot.paramMap.get('productId');
     console.log(productId);
-    this.webApiService.getProductIssues(productId).subscribe(
-      (resp) => {
-        console.log(resp)
-        this.issues = resp.Value;
-      },
-      (error) => {
-        console.log(error);
+    this.webApiService.getProductIssues(productId).then(
+      (service) => {
+        service.subscribe(
+          (resp) => {
+            console.log(resp)
+            this.issues = resp.Value;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       }
-    );
+    )
   }
   goIssueDisplayPage(issueId: number){
     console.log("issue id is " + issueId);
@@ -48,13 +52,17 @@ export class IssueAdminPanelComponent implements OnInit {
   deleteIssue(issueId: number, index: number){
     console.log("delete " + issueId);
     console.log("index " + index);
-    this.webApiService.deleteProductIssue(issueId).subscribe(
-      (resp)=>{
-        this.issues.splice(index, 1);
-        console.log(resp);
-      },
-      (error)=>{
-        console.log(error);
+    this.webApiService.deleteProductIssue(issueId).then(
+      (service) => {
+        service.subscribe(
+          (resp)=>{
+            this.issues.splice(index, 1);
+            console.log(resp);
+          },
+          (error)=>{
+            console.log(error);
+          }
+        )
       }
     )
   }

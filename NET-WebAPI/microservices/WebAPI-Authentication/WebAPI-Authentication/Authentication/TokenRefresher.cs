@@ -34,10 +34,11 @@ namespace WebAPI_Authentication.Authentication
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    ValidateLifetime = false
                 }, out validatedToken);
             var jwtToken = validatedToken as JwtSecurityToken;
-            if (jwtToken == null || !jwtToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase)) {
+            if (jwtToken == null) {
                 throw new SecurityTokenException("Invalid token passed!");
             }
 

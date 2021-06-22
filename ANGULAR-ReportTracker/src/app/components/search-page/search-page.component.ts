@@ -23,13 +23,17 @@ export class SearchPageComponent implements OnInit {
     var name =  this.activatedRoute.queryParams.subscribe(
       params => {
         console.log(params.usersearch);
-        this.webApiService.getSearchResults(params.usersearch).subscribe(
-          (resp) => {
-            console.log(resp.Value);
-            this.products = resp.Value;
-          },
-          (error) => {
-            console.log(error);
+        this.webApiService.getSearchResults(params.usersearch).then(
+          (service) => {
+            service.subscribe(
+              (resp) => {
+                console.log(resp.Value);
+                this.products = resp.Value;
+              },
+              (error) => {
+                console.log(error);
+              }
+            )
           }
         )
       }

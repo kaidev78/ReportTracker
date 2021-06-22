@@ -24,18 +24,22 @@ export class AdminNewProjectFormComponent implements OnInit {
       ProductName: this.ProductName,
       ProductDescription: this.ProductDescription
     };
-    this.webService.addProduct(product).subscribe(
-      (resp)=>{
-        console.log("response: " + resp);
-        console.log("sucessfull registered");
-      },
-      (error)=>{
-        console.log("error " + error.status)
-        if(error.status == 400){
-          
-        }
+    this.webService.addProduct(product).then(
+      (service) => {
+        service.subscribe(
+          (resp)=>{
+            console.log("response: " + resp);
+            console.log("sucessfull registered");
+          },
+          (error)=>{
+            console.log("error " + error.status)
+            if(error.status == 400){
+              
+            }
+          }
+        );
       }
-    );
+    )
   }
 
 }

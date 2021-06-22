@@ -23,14 +23,18 @@ export class AdminIssueEditComponent implements OnInit {
     }
     var issueId:any = this.route.snapshot.paramMap.get("issueId");
     console.log("issue id is " + issueId);
-    this.webApiService.getProductIssue(issueId).subscribe(
-      (resp)=>{
-        this.issue = resp.Value[0];
-        this.StatusOption = this.issue?.IssueStatus
-        console.log(resp);
-      },
-      (error)=>{
-        console.log(error);
+    this.webApiService.getProductIssue(issueId).then(
+      (service) => {
+        service.subscribe(
+          (resp)=>{
+            this.issue = resp.Value[0];
+            this.StatusOption = this.issue?.IssueStatus
+            console.log(resp);
+          },
+          (error)=>{
+            console.log(error);
+          }
+        )
       }
     )
   }
@@ -49,13 +53,17 @@ export class AdminIssueEditComponent implements OnInit {
       IssueId: this.issue?.IssueId,
       IssueStatusCode: this.StatusOption
     }
-    this.webApiService.updateIssueStatus(issueStatus).subscribe(
-      (resp) => {
-        console.log(resp);
-        this.issue['IssueStatus'] = this.StatusOption;
-      },
-      (error) => {
-        console.log(error);
+    this.webApiService.updateIssueStatus(issueStatus).then(
+      (service) => {
+        service.subscribe(
+          (resp) => {
+            console.log(resp);
+            this.issue['IssueStatus'] = this.StatusOption;
+          },
+          (error) => {
+            console.log(error);
+          }
+        )
       }
     )
   }

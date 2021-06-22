@@ -6,6 +6,8 @@ import { Product } from '../models/Product';
 import { catchError } from 'rxjs/operators';
 import { Issue } from '../models/Issue';
 import { IssueStatus } from '../models/IssueStatus';
+import jwt_decode from "jwt-decode";
+import { RefreshCred } from '../models/RefreshCred';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +24,7 @@ export class WebApiService {
   private getProductIssueUrl = 'http://localhost:5000/product-issue/';
   private deleteIssueUrl = 'http://localhost:5000/delete-issue/';
   private updateIssueStatusUrl  = 'http://localhost:5000/update-issue-status';
+  private refreshTokenUrl = 'http://localhost:5001/api/user/refresh';
 
   constructor(private http:HttpClient) { }
   token: any = localStorage.getItem("JwtToken");
@@ -46,6 +49,34 @@ export class WebApiService {
       });
   }
 
+  async checkTokenExpireTime(){
+    var decoded:any = jwt_decode(this.token);
+    var currentTime = new Date().getTime() / 1000;
+    console.log(currentTime);
+    console.log(parseInt(decoded['exp']));
+    if(currentTime> parseInt(decoded['exp'])){
+      console.log("call refresh to refresh token");
+      var refreshCred: RefreshCred = {
+        JwtToken: localStorage.getItem("JwtToken"),
+        RefreshToken: localStorage.getItem("RefreshToken")
+      }
+      await this.http.post<any>(this.refreshTokenUrl, refreshCred).toPromise().then(
+        (resp) => {
+          console.log(resp);
+          localStorage.setItem('JwtToken', resp['JwtToken']);
+          localStorage.setItem('RefreshToken', resp['RefreshToken']);
+        },
+        (error) => {
+          console.log(error);
+        }
+      )
+      
+    }
+    else{
+      console.log("token is not expired yet");
+    }
+  }
+
 
   register(user: User): Observable<any> {
     console.log("register is called");
@@ -54,51 +85,64 @@ export class WebApiService {
     );
   }
 
-  addProduct(product: Product): Observable<any>{
+  async addProduct(product: Product): Promise<Observable<any>>{
     console.log("add product is called");
+    await this.checkTokenExpireTime();
     return this.http.post(this.addProductUrl, product, {"headers": this.headers}).pipe(
       catchError(this.handleError)
     )
   }
 
-  getProducts(): Observable<any>{
+  async getProducts(): Promise<Observable<any>>{
     console.log("get product is called");
+    await this.checkTokenExpireTime();
     return this.http.get(this.getProductListUrl, {"headers": this.headers}).pipe(
       catchError(this.handleError)
     );
   }
 
-  getSearchResults(productName: string): Observable<any>{
+  async getSearchResults(productName: string): Promise<Observable<any>>{
+    await this.checkTokenExpireTime();
     return this.http.get(this.getSearchResultsUrl+productName, {"headers": this.headers}).pipe(
       catchError(this.handleError)
     );
   }
 
-  getProduct(productId: number): Observable<any>{
+  async getProduct(productId: number): Promise<Observable<any>>{
+    await this.checkTokenExpireTime();
     return this.http.get(this.getProductUrl+productId, {"headers": this.headers}).pipe(
       catchError(this.handleError)
     );
   }
 
-  sendIssue(issue: Issue): Observable<any>{
+  async sendIssue(issue: Issue): Promise<Observable<any>>{
+    await this.checkTokenExpireTime();
     return this.http.post(this.sendIssueUrl, issue, {"headers": this.headers}).pipe(
       catchError(this.handleError)
     );
   }
 
-  getProductIssues(productId: number): Observable<any>{
+  async getProductIssues(productId: number): Promise<Observable<any>>{
+    await this.checkTokenExpireTime();
     return this.http.get(this.getProductIssuesUrl+productId, {"headers": this.headers});
   }
 
-  getProductIssue(issueId: number): Observable<any>{
+  getProductIssuesWithoutRefresh(productId: number): Observable<any>{
+    return this.http.get(this.getProductIssuesUrl+productId, {"headers": this.headers});
+  }
+
+  async getProductIssue(issueId: number): Promise<Observable<any>>{
+    await this.checkTokenExpireTime();
     return this.http.get(this.getProductIssueUrl+issueId, {"headers": this.headers});
   }
 
-  deleteProductIssue(issueId: number): Observable<any>{
+  async deleteProductIssue(issueId: number): Promise<Observable<any>>{
+    await this.checkTokenExpireTime();
     return this.http.delete(this.deleteIssueUrl+issueId, {"headers": this.headers});
   }
 
-  updateIssueStatus(issueStatus: IssueStatus): Observable<any>{
+  async updateIssueStatus(issueStatus: IssueStatus): Promise<Observable<any>>{
+    await this.checkTokenExpireTime();
     return this.http.post(this.updateIssueStatusUrl, issueStatus, {"headers": this.headers});
   }
 

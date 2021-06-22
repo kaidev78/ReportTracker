@@ -25,23 +25,27 @@ export class ProductIssuePageComponent implements OnInit {
     }
     this.activatedRoute.queryParams.subscribe(
       params => {
-        this.webApiService.getProduct(params.productId).subscribe(
-          (resp) => {
-            this.products = resp.Value;
-            var product: ProductRetrieve = resp.Value[0];
-            console.log(this.products);
-            this.webApiService.getProductIssues(product.ProductId).subscribe(
-              (resp)=>{
-                console.log(resp.Value);
-                this.issues = resp.Value;
+        this.webApiService.getProduct(params.productId).then(
+          (service) => {
+            service.subscribe(
+              (resp) => {
+                this.products = resp.Value;
+                var product: ProductRetrieve = resp.Value[0];
+                console.log(this.products);
+                this.webApiService.getProductIssuesWithoutRefresh(product.ProductId).subscribe(
+                  (resp)=>{
+                    console.log(resp.Value);
+                    this.issues = resp.Value;
+                  },
+                  (error)=>{
+                    console.log(error);
+                  }
+                )
               },
-              (error)=>{
+              (error) => {
                 console.log(error);
               }
             )
-          },
-          (error) => {
-            console.log(error);
           }
         )
       }
