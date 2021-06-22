@@ -43,6 +43,9 @@ export class ProductIssuePageComponent implements OnInit {
                 )
               },
               (error) => {
+                if(error.status == 401){
+                  this.authenticate.unauthorized_access();
+                }
                 console.log(error);
               }
             )

@@ -27,7 +27,7 @@ namespace WebAPI_Authentication.Database
                                 + username + @"', '"
                                 + DateTime.Now.AddHours(1) + @"')"
                             + @" END ELSE BEGIN "
-                            + @" UPDATE dbo.AuthenticatedToken SET Expire = '" + DateTime.Now.AddHours(1) + @"' ,"
+                            + @" UPDATE dbo.AuthenticatedToken SET Expire = '" + DateTime.UtcNow.AddHours(1) + @"' ,"
                             + @" Token = '" + token.RefreshToken + @"' "
                             + @" WHERE UserName = '" + username + @"' END END";
 
@@ -90,7 +90,7 @@ namespace WebAPI_Authentication.Database
         }
 
         public void cleanExpiredToken() {
-            string query = @"DELETE FROM dbo.AuthenticatedToken WHERE Expire > GETDATE()";
+            string query = @"DELETE FROM dbo.AuthenticatedToken WHERE Expire < GETDATE()";
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(_authDBConn))
             {

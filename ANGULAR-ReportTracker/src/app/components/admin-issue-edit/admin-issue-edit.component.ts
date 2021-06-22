@@ -32,6 +32,9 @@ export class AdminIssueEditComponent implements OnInit {
             console.log(resp);
           },
           (error)=>{
+            if(error.status == 401){
+              this.authenticate.unauthorized_access();
+            }
             console.log(error);
           }
         )
@@ -61,6 +64,9 @@ export class AdminIssueEditComponent implements OnInit {
             this.issue['IssueStatus'] = this.StatusOption;
           },
           (error) => {
+            if(error.status == 401){
+              this.authenticate.unauthorized_access();
+            }
             console.log(error);
           }
         )

@@ -29,6 +29,9 @@ export class IssueDisplayPageComponent implements OnInit {
             console.log(this.issue);
           },
           (error)=>{
+            if(error.status == 401){
+              this.authenticate.unauthorized_access();
+            }
             console.log(error);
           }
         )

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import jwt_decode from "jwt-decode";
 import { AccountType } from "../../enum/AccountTypeEnum";
+import { JWT_TOKEN, REFRESH_TOKEN } from "../../constant/TOKEN-NAME"
 
 @Injectable({
     providedIn: 'root'
@@ -34,6 +35,12 @@ export class Authenticate{
             return false
         }
         return true
+    }
+
+    unauthorized_access(){
+        localStorage.removeItem(JWT_TOKEN);
+        localStorage.removeItem(REFRESH_TOKEN);
+        this.router.navigate([""]);
     }
 
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {  WebApiService } from '../../services/web-api.service';
-import { Product } from '../../models/Product';
+import { Authenticate } from '../../authenticate/authenticate';
 @Component({
   selector: 'app-admin-project-list-panel',
   templateUrl: './admin-project-list-panel.component.html',
@@ -8,7 +8,7 @@ import { Product } from '../../models/Product';
 })
 export class AdminProjectListPanelComponent implements OnInit {
 
-  constructor(private webApiService: WebApiService) { }
+  constructor(private webApiService: WebApiService, private authenticate: Authenticate) { }
 
   products = [];  
   ngOnInit(): void {
@@ -20,6 +20,9 @@ export class AdminProjectListPanelComponent implements OnInit {
             this.products = resp.Value;
           },
           (error)=>{
+            if(error.status == 401){
+              this.authenticate.unauthorized_access();
+            }
             console.log(error);
           }
         );

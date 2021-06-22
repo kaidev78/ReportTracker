@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable, of, throwError} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
+import { Router } from '@angular/router';
 import { User } from '../models/User';
 import { Product } from '../models/Product';
 import { catchError } from 'rxjs/operators';
@@ -8,6 +9,8 @@ import { Issue } from '../models/Issue';
 import { IssueStatus } from '../models/IssueStatus';
 import jwt_decode from "jwt-decode";
 import { RefreshCred } from '../models/RefreshCred';
+import { JWT_TOKEN, REFRESH_TOKEN } from "../../constant/TOKEN-NAME";
+import { Authenticate } from '../authenticate/authenticate';
 
 @Injectable({
   providedIn: 'root'
@@ -26,10 +29,9 @@ export class WebApiService {
   private updateIssueStatusUrl  = 'http://localhost:5000/update-issue-status';
   private refreshTokenUrl = 'http://localhost:5001/api/user/refresh';
 
-  constructor(private http:HttpClient) { }
-  token: any = localStorage.getItem("JwtToken");
-  headers = new HttpHeaders()
-  .set("Authorization", "Bearer " + this.token);
+  constructor(private http:HttpClient, private router: Router, private authenticate: Authenticate) { }
+
+  tokenName: string = "JwtToken";
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -50,7 +52,8 @@ export class WebApiService {
   }
 
   async checkTokenExpireTime(){
-    var decoded:any = jwt_decode(this.token);
+    var token: any = localStorage.getItem(this.tokenName);
+    var decoded:any = jwt_decode(token);
     var currentTime = new Date().getTime() / 1000;
     console.log(currentTime);
     console.log(parseInt(decoded['exp']));
@@ -87,8 +90,11 @@ export class WebApiService {
 
   async addProduct(product: Product): Promise<Observable<any>>{
     console.log("add product is called");
+    var token = localStorage.getItem(this.tokenName);
+    var headers = new HttpHeaders()
+    .set("Authorization", "Bearer " + token);
     await this.checkTokenExpireTime();
-    return this.http.post(this.addProductUrl, product, {"headers": this.headers}).pipe(
+    return this.http.post(this.addProductUrl, product, {"headers": headers}).pipe(
       catchError(this.handleError)
     )
   }
@@ -96,54 +102,81 @@ export class WebApiService {
   async getProducts(): Promise<Observable<any>>{
     console.log("get product is called");
     await this.checkTokenExpireTime();
-    return this.http.get(this.getProductListUrl, {"headers": this.headers}).pipe(
+    var token = localStorage.getItem(this.tokenName);
+    var headers = new HttpHeaders()
+    .set("Authorization", "Bearer " + token);
+    return this.http.get(this.getProductListUrl, {"headers": headers}).pipe(
       catchError(this.handleError)
     );
   }
 
   async getSearchResults(productName: string): Promise<Observable<any>>{
     await this.checkTokenExpireTime();
-    return this.http.get(this.getSearchResultsUrl+productName, {"headers": this.headers}).pipe(
+    var token = localStorage.getItem(this.tokenName);
+    var headers = new HttpHeaders()
+    .set("Authorization", "Bearer " + token);
+    return this.http.get(this.getSearchResultsUrl+productName, {"headers": headers}).pipe(
       catchError(this.handleError)
     );
   }
 
   async getProduct(productId: number): Promise<Observable<any>>{
     await this.checkTokenExpireTime();
-    return this.http.get(this.getProductUrl+productId, {"headers": this.headers}).pipe(
+    var token = localStorage.getItem(this.tokenName);
+    var headers = new HttpHeaders()
+    .set("Authorization", "Bearer " + token);
+    return this.http.get(this.getProductUrl+productId, {"headers": headers}).pipe(
       catchError(this.handleError)
     );
   }
 
   async sendIssue(issue: Issue): Promise<Observable<any>>{
     await this.checkTokenExpireTime();
-    return this.http.post(this.sendIssueUrl, issue, {"headers": this.headers}).pipe(
+    var token = localStorage.getItem(this.tokenName);
+    var headers = new HttpHeaders()
+    .set("Authorization", "Bearer " + token);
+    return this.http.post(this.sendIssueUrl, issue, {"headers": headers}).pipe(
       catchError(this.handleError)
     );
   }
 
   async getProductIssues(productId: number): Promise<Observable<any>>{
     await this.checkTokenExpireTime();
-    return this.http.get(this.getProductIssuesUrl+productId, {"headers": this.headers});
+    var token = localStorage.getItem(this.tokenName);
+    var headers = new HttpHeaders()
+    .set("Authorization", "Bearer " + token);
+    return this.http.get(this.getProductIssuesUrl+productId, {"headers": headers});
   }
 
   getProductIssuesWithoutRefresh(productId: number): Observable<any>{
-    return this.http.get(this.getProductIssuesUrl+productId, {"headers": this.headers});
+    var token = localStorage.getItem(this.tokenName);
+    var headers = new HttpHeaders()
+    .set("Authorization", "Bearer " + token);
+    return this.http.get(this.getProductIssuesUrl+productId, {"headers": headers});
   }
 
   async getProductIssue(issueId: number): Promise<Observable<any>>{
     await this.checkTokenExpireTime();
-    return this.http.get(this.getProductIssueUrl+issueId, {"headers": this.headers});
+    var token = localStorage.getItem(this.tokenName);
+    var headers = new HttpHeaders()
+    .set("Authorization", "Bearer " + token);
+    return this.http.get(this.getProductIssueUrl+issueId, {"headers": headers});
   }
 
   async deleteProductIssue(issueId: number): Promise<Observable<any>>{
     await this.checkTokenExpireTime();
-    return this.http.delete(this.deleteIssueUrl+issueId, {"headers": this.headers});
+    var token = localStorage.getItem(this.tokenName);
+    var headers = new HttpHeaders()
+    .set("Authorization", "Bearer " + token);
+    return this.http.delete(this.deleteIssueUrl+issueId, {"headers": headers});
   }
 
   async updateIssueStatus(issueStatus: IssueStatus): Promise<Observable<any>>{
     await this.checkTokenExpireTime();
-    return this.http.post(this.updateIssueStatusUrl, issueStatus, {"headers": this.headers});
+    var token = localStorage.getItem(this.tokenName);
+    var headers = new HttpHeaders()
+    .set("Authorization", "Bearer " + token);
+    return this.http.post(this.updateIssueStatusUrl, issueStatus, {"headers": headers});
   }
 
 }

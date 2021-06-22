@@ -78,6 +78,7 @@ namespace WebAPI_Authentication.Authentication
                 if (password == (string)passwordMatch)
                 {
                     DateTime expireTime = DateTime.UtcNow.AddHours(1);
+                    //DateTime expireTime = DateTime.UtcNow.AddSeconds(20);
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var tokenKey = Encoding.ASCII.GetBytes(key);
                     var tokenDescriptor = new SecurityTokenDescriptor

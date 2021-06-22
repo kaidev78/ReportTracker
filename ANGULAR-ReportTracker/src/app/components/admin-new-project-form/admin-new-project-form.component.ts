@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WebApiService } from '../../services/web-api.service';
 import { Product } from '../../models/Product';
+import { Authenticate } from '../../authenticate/authenticate';
+
 @Component({
   selector: 'app-admin-new-project-form',
   templateUrl: './admin-new-project-form.component.html',
@@ -8,7 +10,7 @@ import { Product } from '../../models/Product';
 })
 export class AdminNewProjectFormComponent implements OnInit {
 
-  constructor(private webService: WebApiService) { }
+  constructor(private webService: WebApiService, private authenticate: Authenticate) { }
 
   ngOnInit(): void {
   }
@@ -32,10 +34,10 @@ export class AdminNewProjectFormComponent implements OnInit {
             console.log("sucessfull registered");
           },
           (error)=>{
-            console.log("error " + error.status)
-            if(error.status == 400){
-              
+            if(error.status == 401){
+              this.authenticate.unauthorized_access();
             }
+            console.log("error " + error.status)
           }
         );
       }

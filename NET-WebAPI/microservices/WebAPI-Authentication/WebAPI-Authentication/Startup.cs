@@ -76,7 +76,7 @@ namespace WebAPI_Authentication
             services.AddSingleton<ITokenRefresher>(x => new TokenRefresher(key, x.GetService<IConfiguration>(), x.GetService<IJwtAuthenticationManager>()));
             services.AddSingleton<IJwtAuthenticationManager, JwtAuthenticationManager>();
             services.AddSingleton<IRefreshTokenGenerator, RefreshTokenGenerator>();
-            //services.AddHostedService<CleanExpireTokenTask>();
+            services.AddHostedService<CleanExpireTokenTask>();
 
         }
 

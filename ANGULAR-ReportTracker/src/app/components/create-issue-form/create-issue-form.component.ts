@@ -4,7 +4,7 @@ import { ProductRetrieve } from 'src/app/models/ProductRetrieve';
 import { Issue } from 'src/app/models/Issue';
 import { WebApiService } from '../../services/web-api.service';
 import { Authenticate } from '../../authenticate/authenticate';
-
+import { JWT_TOKEN, REFRESH_TOKEN } from "../../../constant/TOKEN-NAME"
 @Component({
   selector: 'app-create-issue-form',
   templateUrl: './create-issue-form.component.html',
@@ -48,6 +48,9 @@ export class CreateIssueFormComponent implements OnInit {
             console.log(resp)
           },
           (error)=>{
+            if(error.status == 401){
+              this.authenticate.unauthorized_access();
+            }
             console.log(error)
           }
         )  
