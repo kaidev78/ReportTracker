@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ProductRetrieve } from 'src/app/models/ProductRetrieve';
 import { Issue } from 'src/app/models/Issue';
 import { WebApiService } from '../../services/web-api.service';
+import { Authenticate } from '../../authenticate/authenticate';
 
 @Component({
   selector: 'app-create-issue-form',
@@ -16,11 +17,13 @@ export class CreateIssueFormComponent implements OnInit {
   IssueDescription: string = "";
 
   constructor(private router: Router, private route: ActivatedRoute,
-              private webApiService: WebApiService) {
+              private webApiService: WebApiService, private authenticate: Authenticate) {
    }
 
   ngOnInit(): void {
-    
+    if(this.authenticate.normal_authenticate() == false){
+      return;
+    }
   }
 
   submitIssueForm(){

@@ -163,7 +163,7 @@ namespace WebAPI_Authentication.Controllers
             AuthenticationResponse authenticationResponse = _jwtAuthentication.Authenticate(userLogin.UserName, userLogin.UserPassword, redisDataSource);
             if (authenticationResponse == null) return Unauthorized();
             Console.WriteLine("token is :" + authenticationResponse);
-            return Ok(new JsonResult(authenticationResponse));
+            return Ok(authenticationResponse);
         }
 
         [AllowAnonymous]

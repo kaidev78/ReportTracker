@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras  } from '@angular/router';
 import { ProductRetrieve } from 'src/app/models/ProductRetrieve';
 import { WebApiService } from '../../services/web-api.service';
+import { Authenticate } from '../../authenticate/authenticate';
+
 @Component({
   selector: 'app-search-page',
   templateUrl: './search-page.component.html',
@@ -10,11 +12,14 @@ import { WebApiService } from '../../services/web-api.service';
 export class SearchPageComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private webApiService: WebApiService,
-              private router: Router) { }
+              private router: Router, private authenticate: Authenticate) { }
 
   products: any = [];
 
   ngOnInit(): void {
+    if(this.authenticate.normal_authenticate() == false){
+      return;
+    }
     var name =  this.activatedRoute.queryParams.subscribe(
       params => {
         console.log(params.usersearch);

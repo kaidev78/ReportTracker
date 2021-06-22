@@ -4,6 +4,7 @@ import { IssueRetrieve } from 'src/app/models/IssueRetrieve';
 import { ProductRetrieve } from 'src/app/models/ProductRetrieve';
 import { WebApiService } from '../../services/web-api.service';
 import { IssueStatus,IssueType } from '../../../enum/IssueEnum';
+import { Authenticate } from '../../authenticate/authenticate';
 
 @Component({
   selector: 'app-product-issue-page',
@@ -15,10 +16,13 @@ export class ProductIssuePageComponent implements OnInit {
   products: any = [];
   issues: IssueRetrieve[] = [];
   constructor(private router: Router, private webApiService: WebApiService,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute, private authenticate: Authenticate) {
    }
 
   ngOnInit(): void {
+    if(this.authenticate.normal_authenticate() == false){
+      return;
+    }
     this.activatedRoute.queryParams.subscribe(
       params => {
         this.webApiService.getProduct(params.productId).subscribe(

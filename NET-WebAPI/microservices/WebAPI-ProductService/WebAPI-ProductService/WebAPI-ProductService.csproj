@@ -21,6 +21,7 @@
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <None Remove="Consumer\" />
     <None Remove="Database\" />
+    <None Remove="Enum\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NSwag.AspNetCore" Version="13.11.3" />
@@ -40,6 +41,7 @@
     <Folder Include="Authentication\" />
     <Folder Include="Consumer\" />
     <Folder Include="Database\" />
+    <Folder Include="Enum\" />
   </ItemGroup>
 
 </Project>

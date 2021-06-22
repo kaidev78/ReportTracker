@@ -4,6 +4,7 @@ import { WebApiService } from '../../services/web-api.service';
 import { IssueStatus,IssueType } from '../../../enum/IssueEnum';
 import { ActivatedRoute, Router } from '@angular/router'
 import { IssueStatus as IssueStatusCode } from '../../models/IssueStatus'
+import { Authenticate } from '../../authenticate/authenticate'
 
 @Component({
   selector: 'app-admin-issue-edit',
@@ -13,9 +14,13 @@ import { IssueStatus as IssueStatusCode } from '../../models/IssueStatus'
 export class AdminIssueEditComponent implements OnInit {
   issue: any;
   StatusOption: any = -1;
-  constructor(private route: ActivatedRoute, private router: Router,private webApiService: WebApiService) { }
+  constructor(private route: ActivatedRoute, private router: Router,private webApiService: WebApiService,
+              private authenticate: Authenticate) { }
 
   ngOnInit(): void {
+    if(this.authenticate.admin_authenticate() == false){
+      return;
+    }
     var issueId:any = this.route.snapshot.paramMap.get("issueId");
     console.log("issue id is " + issueId);
     this.webApiService.getProductIssue(issueId).subscribe(

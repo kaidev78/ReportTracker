@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { WebApiService } from '../../services/web-api.service';
 import { IssueStatus,IssueType } from '../../../enum/IssueEnum';
 import { IssueRetrieve } from '../../models/IssueRetrieve'
+import { Authenticate } from '../../authenticate/authenticate'
 
 @Component({
   selector: 'app-issue-admin-panel',
@@ -12,11 +13,14 @@ import { IssueRetrieve } from '../../models/IssueRetrieve'
 export class IssueAdminPanelComponent implements OnInit {
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, 
-    private webApiService: WebApiService) { }
+    private webApiService: WebApiService, private authenticate: Authenticate) { }
   
   issues: IssueRetrieve[] = [];
 
   ngOnInit(): void {
+    if(this.authenticate.admin_authenticate()==false){
+      return;
+    }
     var productId:any = this.activatedRoute.snapshot.paramMap.get('productId');
     console.log(productId);
     this.webApiService.getProductIssues(productId).subscribe(
@@ -44,9 +48,9 @@ export class IssueAdminPanelComponent implements OnInit {
   deleteIssue(issueId: number, index: number){
     console.log("delete " + issueId);
     console.log("index " + index);
-    this.issues.splice(index, 1);
     this.webApiService.deleteProductIssue(issueId).subscribe(
       (resp)=>{
+        this.issues.splice(index, 1);
         console.log(resp);
       },
       (error)=>{

@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using WebAPI_ProductService.Database;
 using System.IdentityModel.Tokens.Jwt;
+using WebAPI_ProductService.Enum;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -90,6 +91,16 @@ namespace WebAPI_ProductService.Controllers
 
         [HttpDelete("/delete-issue/{issueId}")]
         public IActionResult DeleteIssue(int issueId) {
+            string token = Request.Headers["Authorization"];
+            token = token.Split(' ')[1];
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadJwtToken(token);
+            var tokenS = jsonToken as JwtSecurityToken;
+            int accountType = Int32.Parse(tokenS.Claims.First(claim => claim.Type == "AccountType").Value);
+            if (accountType != (int)AccountType.ADMIN) {
+                Console.WriteLine("This is not an admin");
+                return Unauthorized("This is not an admin");
+            }
             _databaseOperation.deleteIssue(issueId);
             return Ok("Sucessfully Deleted");
         }

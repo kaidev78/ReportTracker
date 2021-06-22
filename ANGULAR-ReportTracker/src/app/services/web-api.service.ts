@@ -24,7 +24,9 @@ export class WebApiService {
   private updateIssueStatusUrl  = 'http://localhost:5000/update-issue-status';
 
   constructor(private http:HttpClient) { }
-
+  token: any = localStorage.getItem("JwtToken");
+  headers = new HttpHeaders()
+  .set("Authorization", "Bearer " + this.token);
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -54,68 +56,50 @@ export class WebApiService {
 
   addProduct(product: Product): Observable<any>{
     console.log("add product is called");
-    const headers = new HttpHeaders()
-      .set("Authorization", "Bearer " + localStorage.getItem("token"));
-    return this.http.post(this.addProductUrl, product, {"headers": headers}).pipe(
+    return this.http.post(this.addProductUrl, product, {"headers": this.headers}).pipe(
       catchError(this.handleError)
     )
   }
 
   getProducts(): Observable<any>{
     console.log("get product is called");
-    const headers = new HttpHeaders()
-    .set("Authorization", "Bearer " + localStorage.getItem("token"));
-    return this.http.get(this.getProductListUrl, {"headers": headers}).pipe(
+    return this.http.get(this.getProductListUrl, {"headers": this.headers}).pipe(
       catchError(this.handleError)
     );
   }
 
   getSearchResults(productName: string): Observable<any>{
-    const headers = new HttpHeaders()
-    .set("Authorization", "Bearer " + localStorage.getItem("token"));
-    return this.http.get(this.getSearchResultsUrl+productName, {"headers": headers}).pipe(
+    return this.http.get(this.getSearchResultsUrl+productName, {"headers": this.headers}).pipe(
       catchError(this.handleError)
     );
   }
 
   getProduct(productId: number): Observable<any>{
-    const headers = new HttpHeaders()
-    .set("Authorization", "Bearer " + localStorage.getItem("token"));
-    return this.http.get(this.getProductUrl+productId, {"headers": headers}).pipe(
+    return this.http.get(this.getProductUrl+productId, {"headers": this.headers}).pipe(
       catchError(this.handleError)
     );
   }
 
   sendIssue(issue: Issue): Observable<any>{
-    const headers = new HttpHeaders()
-    .set("Authorization", "Bearer " + localStorage.getItem("token"));
-    return this.http.post(this.sendIssueUrl, issue, {"headers": headers}).pipe(
+    return this.http.post(this.sendIssueUrl, issue, {"headers": this.headers}).pipe(
       catchError(this.handleError)
     );
   }
 
   getProductIssues(productId: number): Observable<any>{
-    const headers = new HttpHeaders()
-    .set("Authorization", "Bearer " + localStorage.getItem("token"));
-    return this.http.get(this.getProductIssuesUrl+productId, {"headers": headers});
+    return this.http.get(this.getProductIssuesUrl+productId, {"headers": this.headers});
   }
 
   getProductIssue(issueId: number): Observable<any>{
-    const headers = new HttpHeaders()
-    .set("Authorization", "Bearer " + localStorage.getItem("token"));
-    return this.http.get(this.getProductIssueUrl+issueId, {"headers": headers});
+    return this.http.get(this.getProductIssueUrl+issueId, {"headers": this.headers});
   }
 
   deleteProductIssue(issueId: number): Observable<any>{
-    const headers = new HttpHeaders()
-    .set("Authorization", "Bearer " + localStorage.getItem("token"));
-    return this.http.delete(this.deleteIssueUrl+issueId, {"headers": headers});
+    return this.http.delete(this.deleteIssueUrl+issueId, {"headers": this.headers});
   }
 
   updateIssueStatus(issueStatus: IssueStatus): Observable<any>{
-    const headers = new HttpHeaders()
-    .set("Authorization", "Bearer " + localStorage.getItem("token"));
-    return this.http.post(this.updateIssueStatusUrl, issueStatus, {"headers": headers});
+    return this.http.post(this.updateIssueStatusUrl, issueStatus, {"headers": this.headers});
   }
 
 }

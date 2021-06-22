@@ -16,8 +16,6 @@ export class LoginPageComponent implements OnInit {
   constructor(private router:Router, private auth: AuthApiService) { }
 
   ngOnInit(): void {
-    console.log("init: " + localStorage.getItem('token'));
-
   }
 
   /*Login user with provided username and password */
@@ -26,9 +24,11 @@ export class LoginPageComponent implements OnInit {
     console.log("password: " + this.UserPassword)
     this.auth.authtest(this.UserName, this.UserPassword).subscribe(
       (resp)=>{
-        var response = JSON.stringify(resp)
-        localStorage.setItem('token', resp['Value']['token']);
-        var token = resp['Value']['token'];
+        // var response = JSON.stringify(resp)
+        console.log(resp);
+        localStorage.setItem('JwtToken', resp['JwtToken']);
+        localStorage.setItem('RefreshToken', resp['RefreshToken']);
+        var token = resp['JwtToken'];
         var decoded = jwt_decode<any>(token);
         var type = decoded['AccountType'];
         console.log("type is " );
@@ -40,6 +40,7 @@ export class LoginPageComponent implements OnInit {
         else if(type == 1){
           this.router.navigate(['home']);
         }
+
       
       },
       (error)=>{

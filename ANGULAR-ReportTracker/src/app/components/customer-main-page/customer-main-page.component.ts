@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import jwt_decode from "jwt-decode";
+import { Authenticate } from '../../authenticate/authenticate'
 
 @Component({
   selector: 'app-customer-main-page',
@@ -9,13 +10,10 @@ import jwt_decode from "jwt-decode";
 })
 export class CustomerMainPageComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authenticate: Authenticate) { }
 
   ngOnInit(): void {
-    var token = localStorage.getItem("token");
-    if(token == null){
-      this.router.navigate(['']);
-    }
+    this.authenticate.normal_authenticate();
   }
 
   UserSearch: string = "";

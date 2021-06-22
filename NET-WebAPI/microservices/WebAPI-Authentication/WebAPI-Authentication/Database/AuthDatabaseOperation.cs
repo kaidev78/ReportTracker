@@ -27,7 +27,8 @@ namespace WebAPI_Authentication.Database
                                 + username + @"', '"
                                 + DateTime.Now.AddHours(1) + @"')"
                             + @" END ELSE BEGIN "
-                            + @" UPDATE dbo.AuthenticatedToken SET Expire = '" + DateTime.Now.AddHours(1) + @"'"
+                            + @" UPDATE dbo.AuthenticatedToken SET Expire = '" + DateTime.Now.AddHours(1) + @"' ,"
+                            + @" Token = '" + token.RefreshToken + @"' "
                             + @" WHERE UserName = '" + username + @"' END END";
 
             Console.WriteLine("query is " + query);

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IssueRetrieve } from '../../models/IssueRetrieve';
 import { WebApiService } from '../../services/web-api.service';
 import { IssueStatus,IssueType } from '../../../enum/IssueEnum';
+import { Authenticate } from '../../authenticate/authenticate';
 
 @Component({
   selector: 'app-issue-display-page',
@@ -12,9 +13,13 @@ import { IssueStatus,IssueType } from '../../../enum/IssueEnum';
 export class IssueDisplayPageComponent implements OnInit {
 
   issue?: IssueRetrieve;
-  constructor(private route: ActivatedRoute, private webApiService: WebApiService) { }
+  constructor(private route: ActivatedRoute, private webApiService: WebApiService,
+              private authenticate: Authenticate) { }
 
   ngOnInit(): void {
+    if(this.authenticate.normal_authenticate() == false){
+      return;
+    }
     var productId:any = this.route.snapshot.queryParamMap.get("issueId");
     this.webApiService.getProductIssue(productId).subscribe(
       (resp)=>{
