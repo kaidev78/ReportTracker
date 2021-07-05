@@ -1,11 +1,12 @@
 services:
   angular:
-    image: "report-angular"
-    ports:
+    environment:
+      - PORT=4200
+    build:
+      context: ./ANGULAR-ReportTracker/
+      dockerfile: Dockerfile
+    ports: 
       - "4200:4200"
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
   web:
     image: "nginx"
     depends_on:
@@ -16,3 +17,21 @@ services:
       - "8080:80"
     links:
       - "angular"
+  authentication-service:
+    build:
+      context: ./NET-WebAPI/microservices/WebAPI-Authentication/WebAPI-Authentication/
+      dockerfile: Dockerfile
+    ports: 
+      - "5001:5001"
+  product-service:
+    build:
+      context: ./NET-WebAPI/microservices/WebAPI-ProductService/WebAPI-ProductService/
+      dockerfile: Dockerfile
+    ports: 
+      - "5000:5000"
+  publish-service:
+    build:
+      context: ./NET-WebAPI/microservices/WebAPI-Publisher/WebAPI-Publisher/
+      dockerfile: Dockerfile
+    ports: 
+      - "5002:5002"

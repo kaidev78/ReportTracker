@@ -43,14 +43,19 @@ namespace WebAPI_ProductService
             // Register the Swagger services
             services.AddSwaggerDocument();
 
-            // Configure RabbitMQ service
+            // Configure RabbitMQ service 
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<ProductConsumer>();
                 x.AddConsumer<IssueConsumer>();
-
+                
                 x.UsingRabbitMq((context, cfg) =>
-                {
+                {                    
+                    cfg.Host("host.docker.internal", "/", h => {
+                        h.Username("guest");
+                        h.Password("guest");
+                    });
+
                     cfg.ReceiveEndpoint("product-queue", e =>
                     {
                         e.ConfigureConsumer<ProductConsumer>(context);

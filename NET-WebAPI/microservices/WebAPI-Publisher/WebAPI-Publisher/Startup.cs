@@ -41,7 +41,12 @@ namespace WebAPI_Publisher
             // Mass Transit Configuration
             services.AddMassTransit(x =>
             {
-                x.UsingRabbitMq();
+                x.UsingRabbitMq((context, cfg)=> {
+                    cfg.Host("host.docker.internal", "/", h => {
+                        h.Username("guest");
+                        h.Password("guest");
+                    });
+                });
             });
 
             services.AddMassTransitHostedService();

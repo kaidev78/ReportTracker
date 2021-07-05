@@ -45,16 +45,16 @@ namespace WebAPI_Authentication
             services.AddSwaggerDocument();
 
             // Configure RabbitMQ service
-            services.AddMassTransit(x =>
-            {
-                x.UsingRabbitMq();
-            });
+            //services.AddMassTransit(x =>
+            //{
+            //    x.UsingRabbitMq();
+            //});
+            //services.AddMassTransitHostedService();
 
             //JSON serialization
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
-            services.AddMassTransitHostedService();
 
             //Add authorization service
             var key = "ThisIsMySimpleJwtKey"; //temporary key

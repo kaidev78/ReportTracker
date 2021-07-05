@@ -37,13 +37,6 @@ namespace WebAPI_ProductService.Controllers
         }
 
         // GET: api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/values
         [HttpGet("{productId}")]
         public IActionResult GetProduct(int productId)
         {
@@ -58,12 +51,6 @@ namespace WebAPI_ProductService.Controllers
             return Ok(_databaseOperation.getSearchResultsByName(searchName));
         }
 
-        // POST
-        //[HttpPost]
-        //public async Task<IActionResult> CreateProduct([FromBody]Product product)
-        //{
-        //    return Ok(product.ProductName);
-        //}
 
         [HttpGet("/product-list")]
         public IActionResult GetProducts()
