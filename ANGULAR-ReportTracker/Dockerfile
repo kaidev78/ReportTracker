@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:16-alpine3.12
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
